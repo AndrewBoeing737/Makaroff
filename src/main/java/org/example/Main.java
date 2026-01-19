@@ -3,15 +3,32 @@ package org.example;
 import org.apache.catalina.Context;
 import org.apache.catalina.startup.Tomcat;
 import org.example.config.WebConfig;
+import org.example.controller.Database;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
 import java.io.File;
+import java.sql.*;
 
 public class Main {
-
+    private static final String URL =
+            "jdbc:h2:file:./data/appdb;AUTO_SERVER=TRUE";
+    private static final String USER = "sa";
+    private static final String PASS = "";
     public static void main(String[] args) throws Exception {
+        Database.Init();
+        Connection c = DriverManager.getConnection(URL, USER, PASS);
+             Statement st = c.createStatement();
 
+            st.execute("CREATE TABLE IF NOT EXISTS users (id IDENTITY PRIMARY KEY,login VARCHAR(100),password VARCHAR(100))");
+        PreparedStatement ps = c.prepareStatement(
+                "INSERT INTO users(login, password) VALUES (?, ?)");
+
+            ps.setString(1, "login");
+            ps.setString(2, "password");
+            ps.executeUpdate();
+
+        System.out.println(Database.getUsersAsString());
         Tomcat tomcat = new Tomcat();
         tomcat.setPort(8080);
 

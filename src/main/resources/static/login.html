@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Вход — MAKAROFF</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                         Roboto, Helvetica, Arial, sans-serif;
+            background-color: #ffffff;
+            overflow: hidden;
+            color: #1d1d1f;
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .page {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            transition: transform 0.9s ease, opacity 0.9s ease;
+        }
+
+        .page.exit {
+            transform: translateY(-120px);
+            opacity: 0;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 380px;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .brand {
+            font-size: 36px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: #6e6e73;
+            margin-bottom: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            font-size: 13px;
+            color: #6e6e73;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 16px;
+            font-size: 16px;
+            border-radius: 12px;
+            border: 1px solid #d2d2d7;
+            background-color: #f5f5f7;
+            outline: none;
+            transition: border-color 0.2s ease, background-color 0.2s ease;
+        }
+
+        input:focus {
+            border-color: #1d1d1f;
+            background-color: #ffffff;
+        }
+
+        .login-btn {
+            width: 100%;
+            margin-top: 30px;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: 500;
+            border: none;
+            border-radius: 999px;
+            background-color: #1d1d1f;
+            color: #ffffff;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        /* ===== Регистрация ===== */
+        .register-btn {
+            margin-top: 24px;
+            background: none;
+            border: none;
+            font-size: 14px;
+            color: #6e6e73;
+            cursor: pointer;
+        }
+
+        .register-btn span {
+            color: #1d1d1f;
+            font-weight: 500;
+        }
+
+        .register-btn:hover span {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="page" id="page">
+    <div class="container">
+        <div class="brand">MAKAROFF</div>
+        <div class="subtitle">Вход в аккаунт</div>
+
+        <!-- POST форма -->
+        <form id="loginForm" method="post" action="/login">
+            <div class="form-group">
+                <label for="login">Логин</label>
+                <input type="text" id="login" name="login" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Пароль</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+
+            <button type="submit" class="login-btn">Войти</button>
+        </form>
+
+        <!-- Кнопка регистрации вне формы -->
+        <button class="register-btn" id="registerBtn">
+            Нет аккаунта? <span>Зарегистрироваться</span>
+        </button>
+    </div>
+</div>
+
+<script>
+    const form = document.getElementById('loginForm');
+    const page = document.getElementById('page');
+    const registerBtn = document.getElementById('registerBtn');
+
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        page.classList.add('exit');
+
+        setTimeout(() => {
+            form.submit();
+        }, 900);
+    });
+
+    registerBtn.addEventListener('click', () => {
+        page.classList.add('exit');
+
+        setTimeout(() => {
+            window.location.href = 'register';
+        }, 900);
+    });
+</script>
+
+</body>
+</html>

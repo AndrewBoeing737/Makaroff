@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация — MAKAROFF</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                         Roboto, Helvetica, Arial, sans-serif;
+            background-color: #ffffff;
+            overflow: hidden;
+            color: #1d1d1f;
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .page {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            transition: transform 0.9s ease, opacity 0.9s ease;
+        }
+
+        .page.exit {
+            transform: translateY(-120px);
+            opacity: 0;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 380px;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .brand {
+            font-size: 36px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: #6e6e73;
+            margin-bottom: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            font-size: 13px;
+            color: #6e6e73;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 16px;
+            font-size: 16px;
+            border-radius: 12px;
+            border: 1px solid #d2d2d7;
+            background-color: #f5f5f7;
+            outline: none;
+            transition: border-color 0.2s ease, background-color 0.2s ease;
+        }
+
+        input:focus {
+            border-color: #1d1d1f;
+            background-color: #ffffff;
+        }
+
+        .error {
+            border-color: #ff3b30 !important;
+            background-color: #fff5f5;
+        }
+
+        .error-text {
+            font-size: 13px;
+            color: #ff3b30;
+            margin-top: 8px;
+            display: none;
+        }
+
+        .error-text.visible {
+            display: block;
+        }
+
+        .register-btn {
+            width: 100%;
+            margin-top: 30px;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: 500;
+            border: none;
+            border-radius: 999px;
+            background-color: #1d1d1f;
+            color: #ffffff;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .register-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .login-link {
+            margin-top: 24px;
+            background: none;
+            border: none;
+            font-size: 14px;
+            color: #6e6e73;
+            cursor: pointer;
+        }
+
+        .login-link span {
+            color: #1d1d1f;
+            font-weight: 500;
+        }
+
+        .login-link:hover span {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="page" id="page">
+    <div class="container">
+        <div class="brand">MAKAROFF</div>
+        <div class="subtitle">Создание аккаунта</div>
+
+        <!-- POST форма -->
+        <form id="registerForm" method="post" action="/register">
+            <div class="form-group">
+                <label for="login">Логин</label>
+                <input type="text" id="login" name="login" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Пароль</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password2">Подтверждение пароля</label>
+                <!-- name УБРАН: в POST не отправляется -->
+                <input type="password" id="password2" required>
+                <div class="error-text" id="errorText">
+                    Пароли не совпадают
+                </div>
+            </div>
+
+            <button type="submit" class="register-btn">
+                Зарегистрироваться
+            </button>
+        </form>
+
+        <button class="login-link" id="loginBtn">
+            Уже есть аккаунт? <span>Войти</span>
+        </button>
+    </div>
+</div>
+
+<script>
+    const form = document.getElementById('registerForm');
+    const page = document.getElementById('page');
+    const loginBtn = document.getElementById('loginBtn');
+    const password = document.getElementById('password');
+    const password2 = document.getElementById('password2');
+    const errorText = document.getElementById('errorText');
+
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        password2.classList.remove('error');
+        errorText.classList.remove('visible');
+
+        if (password.value !== password2.value) {
+            password2.classList.add('error');
+            errorText.classList.add('visible');
+            return;
+        }
+
+        page.classList.add('exit');
+
+        setTimeout(() => {
+            form.submit(); // отправится ТОЛЬКО login + password
+        }, 900);
+    });
+
+    loginBtn.addEventListener('click', () => {
+        page.classList.add('exit');
+        setTimeout(() => {
+            window.location.href = 'login.html';
+        }, 900);
+    });
+</script>
+
+</body>
+</html>

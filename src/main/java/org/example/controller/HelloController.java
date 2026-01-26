@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import org.example.baseclases.Client;
 import org.h2.tools.Server;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,7 +22,7 @@ import java.sql.SQLException;
 @RestController
 public class HelloController {
     Database database;
-
+    Client client;
     private String readResourceHtml(String resourcePath) {
         InputStream is = getClass().getClassLoader().getResourceAsStream(resourcePath);
         if (is == null) {
@@ -43,8 +45,11 @@ public class HelloController {
     @GetMapping("/")
     public String root() throws SQLException {
         database=new Database();
-        database.startBrowser();
-
+        try {
+            database.startBrowser();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         return readResourceHtml("static/hello.html");
     }
 
@@ -56,16 +61,20 @@ public class HelloController {
 
     // Обработка логина
     @PostMapping("/login")
-    public String loginSubmit(@RequestParam(required = false, defaultValue = "Гость") String login,
+    public RedirectView loginSubmit(@RequestParam(required = false, defaultValue = "Гость") String login,
                               @RequestParam(required = false, defaultValue = "Гость") String password) {
         System.out.println("Login: " + login + "\tPassword: " + password);
         database=new Database();
+        RedirectView redirectView = new RedirectView();
+
         if(database.checkLogin(login,password)){
-            String page= readResourceHtml("static/filemanager.html");
-            page=page.replace("*ACCAUNT_FOR_REPLACE*",login);
-            return page;
+            redirectView.setUrl("/files");
+
+            client=new Client(login);
+            return redirectView;
         }else{
-            return registerForm();
+            redirectView.setUrl("/register");
+            return redirectView;
         }
 
 
@@ -79,14 +88,24 @@ public class HelloController {
 
     // Обработка регистрации
     @PostMapping("/register")
-    public String registerSubmit(@RequestParam(required = false, defaultValue = "Гость") String login,
+    public RedirectView registerSubmit(@RequestParam(required = false, defaultValue = "Гость") String login,
                                  @RequestParam(required = false, defaultValue = "Гость") String password) {
         System.out.println("Register login: " + login + "\tPassword: " + password);
+        RedirectView redirectView = new RedirectView();
         if(database.addUser(login,password)){
-            return loginForm();
+            redirectView.setUrl("/login");
+            return redirectView;
         }else{
-            return registerForm();
+            redirectView.setUrl("/register");
+            return redirectView;
         }
 
+    }
+    @GetMapping("/files")
+    public String filesForm() {
+        String page= readResourceHtml("static/filemanager.html");
+        page=page.replace("*ACCAUNT_FOR_REPLACE*",client.getLogin());
+
+        return page;
     }
 }

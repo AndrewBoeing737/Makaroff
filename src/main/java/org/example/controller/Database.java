@@ -7,6 +7,9 @@ public class Database {
 
     public  void startBrowser() throws SQLException {
         // Запустить веб-консоль на порту 8082
+        if (webServer != null){
+            return;
+        }
         webServer = Server.createWebServer("-web", "-webAllowOthers", "-webPort", "8085").start();
         System.out.println("H2 Console доступна: http://localhost:8085");
     }
@@ -28,6 +31,7 @@ public class Database {
              Statement st = c.createStatement()) {
 
             st.execute("CREATE TABLE IF NOT EXISTS users (id IDENTITY PRIMARY KEY,login VARCHAR(100) UNIQUE NOT NULL,password VARCHAR(100) NOT NULL);");
+           // st.execute("CREATE TABLE IF NOT EXISTS files (id IDENTITY PRIMARY KEY,name VARCHAR(100) NOT NULL,password VARCHAR(100) NOT NULL);");
 
         } catch (SQLException e) {
             throw new RuntimeException(e);

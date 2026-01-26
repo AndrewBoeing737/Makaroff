@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import org.h2.tools.Server;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +15,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.sql.SQLException;
 
 @RestController
 public class HelloController {
+    Database database;
 
     private String readResourceHtml(String resourcePath) {
         InputStream is = getClass().getClassLoader().getResourceAsStream(resourcePath);
@@ -38,7 +41,10 @@ public class HelloController {
 
     // Главная страница
     @GetMapping("/")
-    public String root() {
+    public String root() throws SQLException {
+        database=new Database();
+        database.startBrowser();
+
         return readResourceHtml("static/hello.html");
     }
 
@@ -53,9 +59,16 @@ public class HelloController {
     public String loginSubmit(@RequestParam(required = false, defaultValue = "Гость") String login,
                               @RequestParam(required = false, defaultValue = "Гость") String password) {
         System.out.println("Login: " + login + "\tPassword: " + password);
+        database=new Database();
+        if(database.checkLogin(login,password)){
+            String page= readResourceHtml("static/filemanager.html");
+            page=page.replace("*ACCAUNT_FOR_REPLACE*",login);
+            return page;
+        }else{
+            return registerForm();
+        }
 
-        // После логина делаем redirect на главную
-        return "redirect:/";
+
     }
 
     // Страница регистрации
@@ -69,7 +82,11 @@ public class HelloController {
     public String registerSubmit(@RequestParam(required = false, defaultValue = "Гость") String login,
                                  @RequestParam(required = false, defaultValue = "Гость") String password) {
         System.out.println("Register login: " + login + "\tPassword: " + password);
+        if(database.addUser(login,password)){
+            return loginForm();
+        }else{
+            return registerForm();
+        }
 
-        return readResourceHtml("static/register.html");
     }
 }

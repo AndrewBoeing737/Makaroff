@@ -1,0 +1,58 @@
+2026-01-26 20:18:18.838476+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "CREATE TABLE IF NOT EXISTS users (id IDENTITY PRIMARY KEY,login VARCHAR(100) UNIQUE NOT NULL,password VARCHAR(100)) [*]NOT NULL"
+Syntax error in SQL statement "CREATE TABLE IF NOT EXISTS users (id IDENTITY PRIMARY KEY,login VARCHAR(100) UNIQUE NOT NULL,password VARCHAR(100)) [*]NOT NULL"; SQL statement:
+CREATE TABLE IF NOT EXISTS users (id IDENTITY PRIMARY KEY,login VARCHAR(100) UNIQUE NOT NULL,password VARCHAR(100)) NOT NULL [42000-224]
+2026-01-26 20:19:38.085608+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "CREATE TABLE IF NOT EXISTS users (id IDENTITY PRIMARY KEY,login VARCHAR(100) UNIQUE NOT NULL,password VARCHAR(100)) [*]NOT NULL)"
+Syntax error in SQL statement "CREATE TABLE IF NOT EXISTS users (id IDENTITY PRIMARY KEY,login VARCHAR(100) UNIQUE NOT NULL,password VARCHAR(100)) [*]NOT NULL)"; SQL statement:
+CREATE TABLE IF NOT EXISTS users (id IDENTITY PRIMARY KEY,login VARCHAR(100) UNIQUE NOT NULL,password VARCHAR(100)) NOT NULL) [42000-224]
+2026-01-26 20:20:05.524696+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "CREATE TABLE IF NOT EXISTS users (id IDENTITY PRIMARY KEY,login VARCHAR(100) UNIQUE NOT NULL,password VARCHAR(100)) [*]NOT NULL);"
+Syntax error in SQL statement "CREATE TABLE IF NOT EXISTS users (id IDENTITY PRIMARY KEY,login VARCHAR(100) UNIQUE NOT NULL,password VARCHAR(100)) [*]NOT NULL);"; SQL statement:
+CREATE TABLE IF NOT EXISTS users (id IDENTITY PRIMARY KEY,login VARCHAR(100) UNIQUE NOT NULL,password VARCHAR(100)) NOT NULL); [42000-224]
+2026-01-26 21:05:47.700229+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "[*]FROM USERS SELECT *"
+Syntax error in SQL statement "[*]FROM USERS SELECT *"; SQL statement:
+FROM USERS SELECT * [42000-224]
+2026-01-26 21:06:02.185760+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "[*]FROM USERS SELECT ALL"
+Syntax error in SQL statement "[*]FROM USERS SELECT ALL"; SQL statement:
+FROM USERS SELECT ALL [42000-224]
+2026-01-26 21:06:09.028860+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "[*]FROM TABLE USERS SELECT ALL"
+Syntax error in SQL statement "[*]FROM TABLE USERS SELECT ALL"; SQL statement:
+FROM TABLE USERS SELECT ALL [42000-224]
+2026-01-26 21:10:51.471386+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Схема "USERSINFORMATION_SCHEMA" не найдена
+Schema "USERSINFORMATION_SCHEMA" not found; SQL statement:
+SELECT * FROM USERSINFORMATION_SCHEMA.COLUMNS INFORMATION_SCHEMA.CONSTANTS [90079-224]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:644)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.command.Parser.readTablePrimary(Parser.java:1758)
+	at org.h2.command.Parser.readTableReference(Parser.java:2268)
+	at org.h2.command.Parser.parseSelectFromPart(Parser.java:2718)
+	at org.h2.command.Parser.parseSelect(Parser.java:2824)
+	at org.h2.command.Parser.parseQueryPrimary(Parser.java:2708)
+	at org.h2.command.Parser.parseQueryTerm(Parser.java:2564)
+	at org.h2.command.Parser.parseQueryExpressionBody(Parser.java:2543)
+	at org.h2.command.Parser.parseQueryExpressionBodyAndEndOfQuery(Parser.java:2536)
+	at org.h2.command.Parser.parseQueryExpression(Parser.java:2529)
+	at org.h2.command.Parser.parseQuery(Parser.java:2498)
+	at org.h2.command.Parser.parsePrepared(Parser.java:627)
+	at org.h2.command.Parser.parse(Parser.java:592)
+	at org.h2.command.Parser.parse(Parser.java:564)
+	at org.h2.command.Parser.prepareCommand(Parser.java:483)
+	at org.h2.engine.SessionLocal.prepareLocal(SessionLocal.java:639)
+	at org.h2.engine.SessionLocal.prepareCommand(SessionLocal.java:559)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1166)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:245)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:231)
+	at org.h2.server.web.WebApp.getResult(WebApp.java:1345)
+	at org.h2.server.web.WebApp.query(WebApp.java:1143)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1109)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1096)
+	at org.h2.server.web.WebThread.process(WebThread.java:190)
+	at org.h2.server.web.WebThread.run(WebThread.java:103)
+	at java.base/java.lang.Thread.run(Thread.java:1575)

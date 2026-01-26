@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Файлы — MAKAROFF</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                         Roboto, Helvetica, Arial, sans-serif;
+            background-color: #ffffff;
+            color: #1d1d1f;
+            overflow: hidden;
+        }
+
+        /* ===== ШАПКА ===== */
+        .header {
+            height: 64px;
+            padding: 0 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #e5e5ea;
+        }
+
+        .logo {
+            font-weight: 700;
+            letter-spacing: 0.12em;
+        }
+
+        .account {
+            font-size: 14px;
+            color: #6e6e73;
+            cursor: pointer;
+        }
+
+        /* ===== ОСНОВНАЯ ОБЛАСТЬ ===== */
+        .main {
+            height: calc(100% - 64px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 460px; /* +10% */
+            padding: 40px;
+            text-align: center;
+        }
+
+        .files-title {
+            font-size: 30px;
+            font-weight: 700;
+            margin-bottom: 28px;
+        }
+
+        /* ===== СКРОЛЛ СПИСКА ===== */
+        .files-list {
+            height: 330px; /* +10% */
+            overflow-y: auto;
+            padding-right: 6px;
+        }
+
+        .file-item {
+            padding: 14px 16px;
+            margin-bottom: 12px;
+            border-radius: 14px;
+            background-color: #f5f5f7;
+            border: 1px solid #d2d2d7;
+            font-size: 15px;
+            text-align: left;
+        }
+
+        /* ===== Scrollbar ===== */
+        .files-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .files-list::-webkit-scrollbar-thumb {
+            background-color: #c7c7cc;
+            border-radius: 10px;
+        }
+
+        .files-list::-webkit-scrollbar-thumb:hover {
+            background-color: #a1a1a6;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <div class="logo">MAKAROFF</div>
+    <div class="account">*ACCAUNT_FOR_REPLACE*</div>
+</div>
+
+<div class="main">
+    <div class="container">
+
+        <div class="files-title">Ваши файлы</div>
+
+        <div class="files-list">
+            <div class="file-item">Документ_01.pdf</div>
+            <div class="file-item">Отчет_2024.xlsx</div>
+            <div class="file-item">Фото.zip</div>
+            <div class="file-item">Презентация.pptx</div>
+            <div class="file-item">Заметки.txt</div>
+            <div class="file-item">Видео.mp4</div>
+            <div class="file-item">Музыка.mp3</div>
+            <div class="file-item">Backup.tar</div>
+            <div class="file-item">Проект.zip</div>
+            <div class="file-item">Договор.pdf</div>
+            <div class="file-item">README.md</div>
+            <div class="file-item">Логи.log</div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

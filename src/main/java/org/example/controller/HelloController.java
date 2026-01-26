@@ -45,11 +45,7 @@ public class HelloController {
     @GetMapping("/")
     public String root() throws SQLException {
         database=new Database();
-        try {
-            database.startBrowser();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+
         return readResourceHtml("static/hello.html");
     }
 

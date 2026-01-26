@@ -20,6 +20,7 @@ public class Main {
     private static final String PASS = "";
     public static void main(String[] args) throws Exception {
         Database.Init();
+        Database.startBrowser();
 
         System.out.println(Database.getUsersAsString());
         Tomcat tomcat = new Tomcat();

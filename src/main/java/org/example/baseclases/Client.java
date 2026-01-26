@@ -2,10 +2,10 @@ package org.example.baseclases;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Client {
     private String login;
+    private String baseFolder;
     public List<ClientFile> clientFiles;
     public Client(String _login){
         login=_login;
@@ -30,4 +30,11 @@ public class Client {
         }
     }
 
+    public String getBaseFolder() {
+        return baseFolder;
+    }
+
+    public void setBaseFolder(String baseFolder) {
+        this.baseFolder = baseFolder;
+    }
 }

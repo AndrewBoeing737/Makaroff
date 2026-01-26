@@ -5,7 +5,7 @@ import java.sql.*;
 public class Database {
     private static Server webServer;
 
-    public  void startBrowser() throws SQLException {
+    public static void startBrowser() throws SQLException {
         // Запустить веб-консоль на порту 8082
         if (webServer != null){
             return;

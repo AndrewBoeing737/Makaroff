@@ -48,7 +48,6 @@ public class ClientFile {
         name=file.getName();
         filetype= FileType.fromFilename(name);
         extension=name.substring(name.lastIndexOf('.'));
-
         size=file.length();
     }
     ClientFile(File file){

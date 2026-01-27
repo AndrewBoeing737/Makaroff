@@ -27,9 +27,10 @@ enum FileType{
         if (filename == null) return null;
         String lower = filename.toLowerCase();
         for (FileType type : values()) {
-            for(String extension:type.extensions)
+            for(String extension:type.extensions){
             if (lower.endsWith(extension)) {
                 return type;
+            }
             }
         }
         return FileType.Other;
@@ -43,20 +44,55 @@ public class ClientFile {
     private String extension;
     private String fileway;
     long size;
-    ClientFile(String fileway){
+    public ClientFile(String fileway){
         File file=new File(fileway);
         name=file.getName();
         filetype= FileType.fromFilename(name);
         extension=name.substring(name.lastIndexOf('.'));
         size=file.length();
     }
-    ClientFile(File file){
+    public ClientFile(File file){
         name=file.getName();
         filetype= FileType.fromFilename(name);
         extension=name.substring(name.lastIndexOf('.'));
         fileway=file.getAbsolutePath();
         size=file.length();
     }
+    public String getName() {
+        return name;
+    }
 
+    public void setName(String name) {
+        this.name = name;
+    }
 
+    public FileType getFiletype() {
+        return filetype;
+    }
+    public String getFiletypeinString() {
+        return filetype.name();
+    }
+
+    public void setFiletype(FileType filetype) {
+        this.filetype = filetype;
+    }
+
+    public String getExtension() {
+        return extension;
+    }
+
+    public void setExtension(String extension) {
+        this.extension = extension;
+    }
+
+    public String getFileway() {
+        return fileway;
+    }
+
+    public void setFileway(String fileway) {
+        this.fileway = fileway;
+    }
+    public long getSize() {
+        return size;
+    }
 }

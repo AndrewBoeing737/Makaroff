@@ -2,38 +2,38 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Файлы — MAKAROFF</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAKAROFF · Files</title>
 
     <style>
         * {
-            margin: 0;
-            padding: 0;
             box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial;
         }
 
-        html, body {
-            height: 100%;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
-                         Roboto, Helvetica, Arial, sans-serif;
-            background-color: #ffffff;
+        body {
+            margin: 0;
+            height: 100vh;
+            background: #ffffff;
             color: #1d1d1f;
             overflow: hidden;
         }
 
-        /* ===== ШАПКА ===== */
+        /* ===== HEADER ===== */
         .header {
             height: 64px;
             padding: 0 32px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-bottom: 1px solid #e5e5ea;
+            border-bottom: 1px solid #d2d2d7;
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(12px);
         }
 
         .logo {
+            font-size: 22px;
             font-weight: 700;
-            letter-spacing: 0.12em;
+            letter-spacing: 1px;
         }
 
         .account {
@@ -42,85 +42,126 @@
             cursor: pointer;
         }
 
-        /* ===== ОСНОВНАЯ ОБЛАСТЬ ===== */
+        /* ===== MAIN LAYOUT ===== */
         .main {
-            height: calc(100% - 64px);
+            display: flex;
+            height: calc(100vh - 64px);
+        }
+
+        /* ===== UPLOAD ZONE ===== */
+        .upload-zone {
+            width: 28%;
+            padding: 32px;
+            border-right: 1px solid #d2d2d7;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        .container {
+        .upload-form {
             width: 100%;
-            max-width: 460px; /* +10% */
-            padding: 40px;
+            height: 100%;
+        }
+
+        .upload-label {
+            width: 100%;
+            height: 100%;
+            border: 2px dashed #d2d2d7;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             text-align: center;
+            color: #6e6e73;
+            font-size: 16px;
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s;
+            padding: 24px;
+        }
+
+        .upload-label:hover {
+            border-color: #0071e3;
+            background: #f5f5f7;
+        }
+
+        .upload-label input {
+            display: none;
+        }
+
+        /* ===== FILE LIST ===== */
+        .files-area {
+            flex: 1;
+            padding: 32px;
+            overflow-y: auto;
         }
 
         .files-title {
-            font-size: 30px;
+            font-size: 28px;
             font-weight: 700;
-            margin-bottom: 28px;
+            margin-bottom: 24px;
         }
 
-        /* ===== СКРОЛЛ СПИСКА ===== */
-        .files-list {
-            height: 330px; /* +10% */
-            overflow-y: auto;
-            padding-right: 6px;
-        }
-
-        .file-item {
-            padding: 14px 16px;
+        .file-form {
             margin-bottom: 12px;
+        }
+
+        .file-card {
+            width: 100%;
+            padding: 14px 18px;
             border-radius: 14px;
-            background-color: #f5f5f7;
+            background: #f5f5f7;
             border: 1px solid #d2d2d7;
-            font-size: 15px;
             text-align: left;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.15s ease;
         }
 
-        /* ===== Scrollbar ===== */
-        .files-list::-webkit-scrollbar {
-            width: 6px;
+        .file-card:hover {
+            background: #ebebef;
+            transform: translateY(-1px);
         }
 
-        .files-list::-webkit-scrollbar-thumb {
-            background-color: #c7c7cc;
-            border-radius: 10px;
+        .file-name {
+            font-size: 15px;
+            font-weight: 500;
+            margin-bottom: 4px;
         }
 
-        .files-list::-webkit-scrollbar-thumb:hover {
-            background-color: #a1a1a6;
+        .file-meta {
+            font-size: 13px;
+            color: #6e6e73;
         }
     </style>
 </head>
+
 <body>
 
+<!-- ===== HEADER ===== -->
 <div class="header">
     <div class="logo">MAKAROFF</div>
-    <div class="account">*ACCAUNT_FOR_REPLACE*</div>
+    <div class="account">Аккаунт</div>
 </div>
 
+<!-- ===== MAIN ===== -->
 <div class="main">
-    <div class="container">
 
+    <!-- UPLOAD -->
+    <div class="upload-zone">
+        <form class="upload-form" method="post" action="/files" enctype="multipart/form-data">
+            <label class="upload-label">
+                Перенесите или выберите файл<br>
+                для загрузки на сервер
+                <input type="file" name="file" onchange="this.form.submit()">
+            </label>
+        </form>
+    </div>
+
+    <!-- FILE LIST -->
+    <div class="files-area">
         <div class="files-title">Ваши файлы</div>
 
-        <div class="files-list">
-            <div class="file-item">Документ_01.pdf</div>
-            <div class="file-item">Отчет_2024.xlsx</div>
-            <div class="file-item">Фото.zip</div>
-            <div class="file-item">Презентация.pptx</div>
-            <div class="file-item">Заметки.txt</div>
-            <div class="file-item">Видео.mp4</div>
-            <div class="file-item">Музыка.mp3</div>
-            <div class="file-item">Backup.tar</div>
-            <div class="file-item">Проект.zip</div>
-            <div class="file-item">Договор.pdf</div>
-            <div class="file-item">README.md</div>
-            <div class="file-item">Логи.log</div>
-        </div>
+        <!-- FILE -->
+        Загрузите ваши файлы
 
     </div>
 </div>

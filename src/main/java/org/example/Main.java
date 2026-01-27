@@ -26,8 +26,7 @@ public class Main {
         Tomcat tomcat = new Tomcat();
         tomcat.setPort(8080);
 
-        // 🔴 КРИТИЧЕСКИ ВАЖНО
-        tomcat.getConnector(); // ← БЕЗ ЭТОГО ПОРТ НЕ ОТКРОЕТСЯ
+        tomcat.getConnector();
 
         File baseDir = new File(System.getProperty("java.io.tmpdir"));
         Context context = tomcat.addContext("", baseDir.getAbsolutePath());

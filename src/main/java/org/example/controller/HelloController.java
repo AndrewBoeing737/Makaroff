@@ -99,6 +99,7 @@ public class HelloController {
         RedirectView redirectView = new RedirectView();
         if(database.addUser(login,password)){
             redirectView.setUrl("/login");
+
             return redirectView;
         }else{
             redirectView.setUrl("/register");
@@ -168,6 +169,7 @@ public class HelloController {
             // Устанавливаем заголовки
             response.setContentType(contentType);
             response.setContentLengthLong(file.length());
+
             response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
                     "attachment; filename=\"" + file.getName() + "\"");
 

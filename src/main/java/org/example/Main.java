@@ -9,6 +9,7 @@ import org.springframework.web.context.support.AnnotationConfigWebApplicationCon
 import org.springframework.web.servlet.DispatcherServlet;
 
 import java.io.File;
+import java.net.InetAddress;
 import java.sql.*;
 
 public class Main {
@@ -19,6 +20,8 @@ public class Main {
     private static final String USER = "sa";
     private static final String PASS = "";
     public static void main(String[] args) throws Exception {
+        InetAddress localHost = InetAddress.getLocalHost();
+        System.out.println("http://"+localHost.getHostAddress()+":8080");
         Database.Init();
         Database.startBrowser();
 

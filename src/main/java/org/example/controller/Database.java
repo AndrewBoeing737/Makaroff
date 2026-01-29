@@ -150,6 +150,27 @@ public class Database {
         }
 
     }
+    boolean Deletefile(String filename,Client client) {
+
+
+        try (Connection c = DriverManager.getConnection(URL, USER, PASS);
+             Statement st = c.createStatement();
+             PreparedStatement ps = c.prepareStatement(
+                     "DELETE FROM files WHERE FILE_PATH = ?")) {
+
+            ps.setString(1, client.getBaseFolder()+"\\"+filename);
+
+            int rs = ps.executeUpdate();
+            if(rs>0) {
+                return true;
+            }else{
+                return false;
+            }
+        } catch (SQLException ex) {
+            return false;
+        }
+
+    }
     public List<ClientFile> GetFilesFromUser(Client client) {
 
         List<ClientFile> clientFiles=new ArrayList<>();

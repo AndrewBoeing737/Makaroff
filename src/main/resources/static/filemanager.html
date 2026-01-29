@@ -26,8 +26,6 @@
             align-items: center;
             justify-content: space-between;
             border-bottom: 1px solid #d2d2d7;
-            background: rgba(255,255,255,0.85);
-            backdrop-filter: blur(12px);
         }
 
         .logo {
@@ -39,44 +37,32 @@
         .account {
             font-size: 14px;
             color: #6e6e73;
-            cursor: pointer;
         }
 
-        /* ===== MAIN LAYOUT ===== */
+        /* ===== MAIN ===== */
         .main {
             display: flex;
             height: calc(100vh - 64px);
         }
 
-        /* ===== UPLOAD ZONE ===== */
+        /* ===== UPLOAD ===== */
         .upload-zone {
             width: 28%;
             padding: 32px;
             border-right: 1px solid #d2d2d7;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .upload-form {
-            width: 100%;
-            height: 100%;
         }
 
         .upload-label {
-            width: 100%;
             height: 100%;
             border: 2px dashed #d2d2d7;
             border-radius: 18px;
             display: flex;
-            align-items: center;
+            flex-direction: column;
             justify-content: center;
-            text-align: center;
+            align-items: center;
             color: #6e6e73;
-            font-size: 16px;
             cursor: pointer;
-            transition: border-color 0.2s, background 0.2s;
-            padding: 24px;
+            text-align: center;
         }
 
         .upload-label:hover {
@@ -88,8 +74,48 @@
             display: none;
         }
 
-        /* ===== FILE LIST ===== */
-        .files-area {
+        /* ===== PROGRESS ===== */
+        .progress {
+            margin-top: 20px;
+            display: none;
+        }
+
+        .bar {
+            height: 8px;
+            background: #e5e5ea;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .fill {
+            height: 100%;
+            width: 0%;
+            background: #0071e3;
+            transition: width 0.15s linear;
+        }
+
+        .fill.success {
+            background: #34c759;
+        }
+
+        .progress-text {
+            margin-top: 8px;
+            font-size: 13px;
+            color: #6e6e73;
+            text-align: center;
+        }
+
+        .cancel-btn {
+            margin-top: 10px;
+            font-size: 13px;
+            background: none;
+            border: none;
+            color: #0071e3;
+            cursor: pointer;
+        }
+
+        /* ===== FILES ===== */
+        .files {
             flex: 1;
             padding: 32px;
             overflow-y: auto;
@@ -101,30 +127,17 @@
             margin-bottom: 24px;
         }
 
-        .file-form {
-            margin-bottom: 12px;
-        }
-
-        .file-card {
-            width: 100%;
-            padding: 14px 18px;
-            border-radius: 14px;
+        .file {
             background: #f5f5f7;
             border: 1px solid #d2d2d7;
-            text-align: left;
-            cursor: pointer;
-            transition: background 0.2s ease, transform 0.15s ease;
-        }
-
-        .file-card:hover {
-            background: #ebebef;
-            transform: translateY(-1px);
+            border-radius: 14px;
+            padding: 14px 18px;
+            margin-bottom: 12px;
         }
 
         .file-name {
             font-size: 15px;
             font-weight: 500;
-            margin-bottom: 4px;
         }
 
         .file-meta {
@@ -136,35 +149,91 @@
 
 <body>
 
-<!-- ===== HEADER ===== -->
 <div class="header">
     <div class="logo">MAKAROFF</div>
     <div class="account">*ACCAUNT_FOR_REPLACE*</div>
 </div>
 
-<!-- ===== MAIN ===== -->
 <div class="main">
 
-    <!-- UPLOAD -->
+    <!-- ===== UPLOAD ===== -->
     <div class="upload-zone">
-        <form class="upload-form" method="post" action="/files" enctype="multipart/form-data">
-            <label class="upload-label">
-                Перенесите или выберите файл<br>
-                для загрузки на сервер
-                <input type="file" name="file" onchange="this.form.submit()">
-            </label>
-        </form>
+        <label class="upload-label">
+            Перенесите или выберите файл<br>
+            для загрузки на сервер
+            <input type="file" id="fileInput">
+        </label>
+
+        <div class="progress" id="progress">
+            <div class="bar">
+                <div class="fill" id="fill"></div>
+            </div>
+            <div class="progress-text" id="progressText">0%</div>
+            <button class="cancel-btn" id="cancelBtn">Отменить загрузку</button>
+        </div>
     </div>
 
-    <!-- FILE LIST -->
-    <div class="files-area">
+    <!-- ===== FILE LIST ===== -->
+    <div class="files">
         <div class="files-title">Ваши файлы</div>
 
-        <!-- FILE -->
         Загрузите ваши файлы
 
     </div>
+
 </div>
+
+<script>
+    const input = document.getElementById("fileInput");
+    const progress = document.getElementById("progress");
+    const fill = document.getElementById("fill");
+    const text = document.getElementById("progressText");
+    const cancelBtn = document.getElementById("cancelBtn");
+
+    let xhr = null;
+
+    input.addEventListener("change", () => {
+        const file = input.files[0];
+        if (!file) return;
+
+        progress.style.display = "block";
+        fill.classList.remove("success");
+        fill.style.width = "0%";
+        text.textContent = "0%";
+
+        const form = new FormData();
+        form.append("file", file);
+
+        xhr = new XMLHttpRequest();
+        xhr.open("POST", "/files");
+
+        xhr.upload.onprogress = e => {
+            if (e.lengthComputable) {
+                const percent = Math.round((e.loaded / e.total) * 100);
+                fill.style.width = percent + "%";
+                text.textContent = percent + "%";
+            }
+        };
+
+        xhr.onload = () => {
+            fill.classList.add("success");
+            text.textContent = "✓ Загружено";
+
+            setTimeout(() => {
+                location.reload();
+            }, 800);
+        };
+
+        xhr.send(form);
+    });
+
+    cancelBtn.onclick = () => {
+        if (xhr) {
+            xhr.abort();
+            progress.style.display = "none";
+        }
+    };
+</script>
 
 </body>
 </html>

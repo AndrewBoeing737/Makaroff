@@ -160,13 +160,11 @@ public class HelloController {
                 return;
             }
 
-            // Определяем Content-Type
             String contentType = Files.probeContentType(file.toPath());
             if (contentType == null) {
                 contentType = "application/octet-stream";
             }
 
-            // Устанавливаем заголовки
             response.setContentType(contentType);
             response.setContentLengthLong(file.length());
 
@@ -190,5 +188,19 @@ public class HelloController {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
+    @GetMapping("/files/delete")
+    public void deleteFile(@RequestParam("filename") String filename) {
+            File file = new File(client.getBaseFolder(), filename);
+            if(database.Deletefile(file.getName(),client)){
+                if(file.delete()){
+                    System.out.println("Пользователь "+client.getLogin()+" удалил файл "+filename);
+                }else{
+                    System.out.println("Пользователь "+client.getLogin()+"пытался удалить файл "+filename+ "но не получилось");
+                }
+            }else{
+                    System.out.println("Пользователь "+client.getLogin()+"пытался удалить файл "+filename+" но не получилось");
+            }
+
     }
+}
 

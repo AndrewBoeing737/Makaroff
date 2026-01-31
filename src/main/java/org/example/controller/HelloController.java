@@ -113,8 +113,8 @@ public class HelloController {
         page=page.replace("*ACCAUNT_FOR_REPLACE*",client.getLogin());
         String files="";
         for(int i=0;i<client.clientFiles.size();++i){
-            files+="<form class=\"file-form\" method=\"get\" action=\"/files/downloads\" enctype=\"multipart/form-data\">"+
-                    "<button class=\"file-card\">"+
+            files+=" <div class=\"file-card\">\n <form class=\"file-form\" method=\"get\" action=\"/files/downloads\" enctype=\"multipart/form-data\">"+
+                    "<button class=\"file-download-btn\" type=\"submit\">"+
                     "<div class=\"file-name\">"+client.clientFiles.get(i).getName()+"</div>"+
                     "<div class=\"file-meta\">"+
                             client.clientFiles.get(i).getFiletypeinString()+ "·"+ String.valueOf( client.clientFiles.get(i).getSize())+"·"+" 10.02.2026 22:41"+
@@ -123,13 +123,12 @@ public class HelloController {
                     "</button>"+
                     "</form>"+
                     "<form class=\"delete-form\" method=\"post\" action=\"/files/delete\">"+
-                    "<input type=\"hidden\""+
-            "name=\"filename\""+
+                    "<input type=\"hidden\" name=\"filename\""+
             "value=\""+client.clientFiles.get(i).getName()+"\">"+
                     "<button class=\"delete-btn\" type=\"submit\">"+
                     "Удалить"+
                     "</button>"+
-                    "</form>";
+                    "</form>\n </div>\n";
         }
         page=page.replace("Загрузите ваши файлы",files);
         System.out.println("Страница files загружена пользователем: "+client.getLogin());
@@ -212,6 +211,12 @@ public class HelloController {
 
         RedirectView rv=new RedirectView("/files",true,false);
         return rv;
+
+    }
+    @GetMapping("/settings")
+    public String settings(){
+        String page= readResourceHtml("static/settings.html");
+        return page;
 
     }
 }

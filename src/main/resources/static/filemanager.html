@@ -5,180 +5,215 @@
     <title>MAKAROFF · Files</title>
 
     <style>
-        * {
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial;
+        *{
+            box-sizing:border-box;
+            font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial;
         }
 
-        body {
-            margin: 0;
-            height: 100vh;
-            background: #ffffff;
-            color: #1d1d1f;
-            overflow: hidden;
+        body{
+            margin:0;
+            height:100vh;
+            background:#ffffff;
+            color:#1d1d1f;
+            overflow:hidden;
         }
 
         /* ===== HEADER ===== */
-        .header {
-            height: 64px;
-            padding: 0 32px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 1px solid #d2d2d7;
-            background: rgba(255,255,255,0.85);
-            backdrop-filter: blur(12px);
+
+        .header{
+            height:64px;
+            padding:0 32px;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            border-bottom:1px solid #d2d2d7;
+            background:rgba(255,255,255,.85);
+            backdrop-filter:blur(12px);
         }
 
-        .logo {
-            font-size: 22px;
-            font-weight: 700;
-            letter-spacing: 1px;
+        .logo{
+            font-size:22px;
+            font-weight:700;
+            letter-spacing:1px;
         }
 
-        .account {
-            font-size: 14px;
-            color: #6e6e73;
-            cursor: pointer;
+        .account{
+            font-size:14px;
+            color:#6e6e73;
         }
 
         /* ===== MAIN ===== */
-        .main {
-            display: flex;
-            height: calc(100vh - 64px);
+
+        .main{
+            display:flex;
+            height:calc(100vh - 64px);
         }
 
-        /* ===== UPLOAD ZONE ===== */
-        .upload-zone {
-            width: 28%;
-            padding: 32px;
-            border-right: 1px solid #d2d2d7;
+        /* ===== UPLOAD ===== */
+
+        .upload-zone{
+            width:28%;
+            padding:32px;
+            border-right:1px solid #d2d2d7;
         }
 
-        .upload-label {
-            width: 100%;
-            height: 100%;
-            border: 2px dashed #d2d2d7;
-            border-radius: 18px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: #6e6e73;
-            font-size: 16px;
-            cursor: pointer;
-            padding: 24px;
-            transition: border-color 0.2s, background 0.2s;
+        .upload-label{
+            width:100%;
+            height:100%;
+            border:2px dashed #d2d2d7;
+            border-radius:18px;
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            justify-content:center;
+            text-align:center;
+            color:#6e6e73;
+            font-size:16px;
+            cursor:pointer;
+            padding:24px;
+            transition:.2s;
         }
 
-        .upload-label:hover {
-            border-color: #0071e3;
-            background: #f5f5f7;
+        .upload-label:hover{
+            border-color:#0071e3;
+            background:#f5f5f7;
         }
 
-        .upload-label input {
-            display: none;
-        }
+        .upload-label input{display:none}
 
         /* ===== PROGRESS ===== */
-        .progress-wrapper {
-            width: 100%;
-            margin-top: 20px;
-            display: none;
+
+        .progress-wrapper{
+            width:100%;
+            margin-top:20px;
+            display:none;
         }
 
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background: #e5e5ea;
-            border-radius: 6px;
-            overflow: hidden;
+        .progress-bar{
+            width:100%;
+            height:8px;
+            background:#e5e5ea;
+            border-radius:6px;
+            overflow:hidden;
         }
 
-        .progress-fill {
-            height: 100%;
-            width: 0%;
-            background: #0071e3;
-            transition: width 0.15s linear;
+        .progress-fill{
+            height:100%;
+            width:0%;
+            background:#0071e3;
+            transition:width .15s linear;
         }
 
-        .progress-text {
-            margin-top: 8px;
-            font-size: 13px;
-            color: #6e6e73;
-            text-align: center;
+        .progress-text{
+            margin-top:8px;
+            font-size:13px;
+            color:#6e6e73;
+            text-align:center;
         }
 
         /* ===== FILE LIST ===== */
-        .files-area {
-            flex: 1;
-            padding: 32px;
-            overflow-y: auto;
+
+        .files-area{
+            flex:1;
+            padding:32px;
+            overflow-y:auto;
         }
 
-        .files-title {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 24px;
+        .files-title{
+            font-size:28px;
+            font-weight:700;
+            margin-bottom:24px;
         }
 
-        .file-form {
-            margin-bottom: 12px;
+        /* ===== FILE CARD ===== */
+
+        .file-card{
+            width:100%;
+            margin-bottom:12px;
+
+            display:flex;
+            align-items:stretch;
+
+            background:#f5f5f7;
+            border:1px solid #d2d2d7;
+            border-radius:14px;
+
+            overflow:hidden;
+
+            transition:background .2s, transform .15s;
         }
 
-        .file-card {
-            width: 100%;
-            padding: 14px 18px;
-            border-radius: 14px;
-            background: #f5f5f7;
-            border: 1px solid #d2d2d7;
-            text-align: left;
-            cursor: pointer;
-            transition: background 0.2s ease, transform 0.15s ease;
+        .file-card:hover{
+            background:#ebebef;
+            transform:translateY(-1px);
         }
 
-        .file-card:hover {
-            background: #ebebef;
-            transform: translateY(-1px);
+        /* download form */
+
+        .file-form{
+            flex:1;
+            margin:0;
         }
 
-        .file-name {
-            font-size: 15px;
-            font-weight: 500;
-            margin-bottom: 4px;
+        .file-download-btn{
+            all:unset;
+            width:100%;
+            height:100%;
+            padding:14px 18px;
+
+            display:flex;
+            flex-direction:column;
+            justify-content:center;
+
+            cursor:pointer;
         }
 
-        .file-meta {
-            font-size: 13px;
-            color: #6e6e73;
+        /* text */
+
+        .file-name{
+            font-size:15px;
+            font-weight:500;
+            margin-bottom:4px;
+
+            white-space:nowrap;
+            overflow:hidden;
+            text-overflow:ellipsis;
         }
+
+        .file-meta{
+            font-size:13px;
+            color:#6e6e73;
+        }
+
         /* ===== DELETE ===== */
 
-.delete-form{
-    margin:0;
-}
+        .delete-form{
+            margin:0;
+        }
 
-.delete-btn{
-    all:unset;
+        .delete-btn{
+            all:unset;
 
-    width:90px;
-    height:100%;
+            height:100%;
+            padding:0 18px;
 
-    display:flex;
-    align-items:center;
-    justify-content:center;
+            display:flex;
+            align-items:center;
+            justify-content:center;
 
-    cursor:pointer;
+            font-size:13px;
+            font-weight:500;
 
-    color:#d70015;
-    font-size:13px;
-    font-weight:500;
-}
+            color:#d70015;
 
-.delete-btn:hover{
-    background:rgba(215,0,21,0.08);
-}
+            cursor:pointer;
+
+            transition:background .2s;
+        }
+
+        .delete-btn:hover{
+            background:rgba(215,0,21,.12);
+        }
     </style>
 </head>
 
@@ -209,11 +244,17 @@
 
     </div>
 
-    <!-- FILE LIST -->
+    <!-- FILES -->
+
     <div class="files-area">
         <div class="files-title">Ваши файлы</div>
+
+        <!-- ОДИН ФАЙЛ (как должен генерироваться сервером) -->
+
         Загрузите ваши файлы
+
     </div>
+
 </div>
 
 <script>
@@ -223,7 +264,8 @@
     const progressText = document.getElementById("progressText");
 
     input.addEventListener("change", () => {
-        if (!input.files.length) return;
+
+        if(!input.files.length) return;
 
         const file = input.files[0];
         const formData = new FormData();
@@ -236,20 +278,19 @@
         const xhr = new XMLHttpRequest();
         xhr.open("POST", "/upload", true);
 
-        xhr.upload.onprogress = (e) => {
-            if (e.lengthComputable) {
-                const percent = Math.round((e.loaded / e.total) * 100);
-                progressFill.style.width = percent + "%";
-                progressText.textContent = percent + "%";
+        xhr.upload.onprogress = e=>{
+            if(e.lengthComputable){
+                const p = Math.round(e.loaded / e.total * 100);
+                progressFill.style.width = p + "%";
+                progressText.textContent = p + "%";
             }
         };
 
-        xhr.onload = () => {
-            progressText.textContent = "Загрузка завершена";
+        xhr.onload = ()=>{
             progressFill.style.width = "100%";
-            setTimeout(() => {
-            location.reload(); // ОБНОВЛЕНИЕ СТРАНИЦЫ
-        }, 800);
+            progressText.textContent = "Загрузка завершена";
+
+            setTimeout(()=>location.reload(),800);
         };
 
         xhr.send(formData);

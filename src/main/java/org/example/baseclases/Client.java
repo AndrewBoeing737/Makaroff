@@ -30,6 +30,15 @@ public class Client {
             clientFiles.add(clientFile);
         }
     }
+    public void DeleteFile(String clientFile){
+        for(int i=0;i<clientFiles.size();++i){
+            if(clientFiles.get(i).getName().equals(clientFile)){
+                clientFiles.remove(i);
+                break;
+            }
+        }
+
+    }
 
     public String getBaseFolder() {
         return baseFolder;

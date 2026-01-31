@@ -1,9 +1,14 @@
 package org.example.controller;
+import org.example.Main;
 import org.example.baseclases.Client;
 import org.example.baseclases.ClientFile;
 import org.h2.tools.Server;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,13 +46,17 @@ public class Database {
     /* ===============================
        Добавить пользователя
        =============================== */
-    public boolean addUser(String login, String password) {
+    public boolean addUser(String login, String password) throws IOException {
+
+        Path userfolder= Paths.get("C:\\Users\\user\\Downloads\\TestServer\\"+login);
+        Files.createDirectory(userfolder);
         try (Connection c = DriverManager.getConnection(URL, USER, PASS);
              PreparedStatement ps = c.prepareStatement(
-                     "INSERT INTO users(login, password) VALUES (?, ?)")) {
+                     "INSERT INTO users(login, password,folder) VALUES (?, ?, ?)")) {
 
             ps.setString(1, login);
             ps.setString(2, password);
+            ps.setString(3, "C:\\Users\\user\\Downloads\\TestServer\\"+login);
             ps.executeUpdate();
 
             return true;
@@ -151,16 +160,13 @@ public class Database {
 
     }
     boolean Deletefile(String filename,Client client) {
-
-
         try (Connection c = DriverManager.getConnection(URL, USER, PASS);
              Statement st = c.createStatement();
              PreparedStatement ps = c.prepareStatement(
                      "DELETE FROM files WHERE FILE_PATH = ?")) {
-
             ps.setString(1, client.getBaseFolder()+"\\"+filename);
-
             int rs = ps.executeUpdate();
+            client.DeleteFile(filename);
             if(rs>0) {
                 return true;
             }else{

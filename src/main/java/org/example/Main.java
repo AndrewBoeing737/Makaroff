@@ -14,7 +14,6 @@ import java.sql.*;
 
 public class Main {
 
-
   private static final String URL =
             "jdbc:h2:file:./data/appdb;AUTO_SERVER=TRUE";
     private static final String USER = "sa";

@@ -26,6 +26,8 @@
             align-items: center;
             justify-content: space-between;
             border-bottom: 1px solid #d2d2d7;
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(12px);
         }
 
         .logo {
@@ -37,6 +39,7 @@
         .account {
             font-size: 14px;
             color: #6e6e73;
+            cursor: pointer;
         }
 
         /* ===== MAIN ===== */
@@ -45,7 +48,7 @@
             height: calc(100vh - 64px);
         }
 
-        /* ===== UPLOAD ===== */
+        /* ===== UPLOAD ZONE ===== */
         .upload-zone {
             width: 28%;
             padding: 32px;
@@ -53,16 +56,20 @@
         }
 
         .upload-label {
+            width: 100%;
             height: 100%;
             border: 2px dashed #d2d2d7;
             border-radius: 18px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            color: #6e6e73;
-            cursor: pointer;
+            justify-content: center;
             text-align: center;
+            color: #6e6e73;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 24px;
+            transition: border-color 0.2s, background 0.2s;
         }
 
         .upload-label:hover {
@@ -75,27 +82,25 @@
         }
 
         /* ===== PROGRESS ===== */
-        .progress {
+        .progress-wrapper {
+            width: 100%;
             margin-top: 20px;
             display: none;
         }
 
-        .bar {
+        .progress-bar {
+            width: 100%;
             height: 8px;
             background: #e5e5ea;
             border-radius: 6px;
             overflow: hidden;
         }
 
-        .fill {
+        .progress-fill {
             height: 100%;
             width: 0%;
             background: #0071e3;
             transition: width 0.15s linear;
-        }
-
-        .fill.success {
-            background: #34c759;
         }
 
         .progress-text {
@@ -105,17 +110,8 @@
             text-align: center;
         }
 
-        .cancel-btn {
-            margin-top: 10px;
-            font-size: 13px;
-            background: none;
-            border: none;
-            color: #0071e3;
-            cursor: pointer;
-        }
-
-        /* ===== FILES ===== */
-        .files {
+        /* ===== FILE LIST ===== */
+        .files-area {
             flex: 1;
             padding: 32px;
             overflow-y: auto;
@@ -127,23 +123,62 @@
             margin-bottom: 24px;
         }
 
-        .file {
+        .file-form {
+            margin-bottom: 12px;
+        }
+
+        .file-card {
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: 14px;
             background: #f5f5f7;
             border: 1px solid #d2d2d7;
-            border-radius: 14px;
-            padding: 14px 18px;
-            margin-bottom: 12px;
+            text-align: left;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.15s ease;
+        }
+
+        .file-card:hover {
+            background: #ebebef;
+            transform: translateY(-1px);
         }
 
         .file-name {
             font-size: 15px;
             font-weight: 500;
+            margin-bottom: 4px;
         }
 
         .file-meta {
             font-size: 13px;
             color: #6e6e73;
         }
+        /* ===== DELETE ===== */
+
+.delete-form{
+    margin:0;
+}
+
+.delete-btn{
+    all:unset;
+
+    width:90px;
+    height:100%;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    cursor:pointer;
+
+    color:#d70015;
+    font-size:13px;
+    font-weight:500;
+}
+
+.delete-btn:hover{
+    background:rgba(215,0,21,0.08);
+}
     </style>
 </head>
 
@@ -156,83 +191,69 @@
 
 <div class="main">
 
-    <!-- ===== UPLOAD ===== -->
+    <!-- UPLOAD -->
     <div class="upload-zone">
+
         <label class="upload-label">
             Перенесите или выберите файл<br>
             для загрузки на сервер
             <input type="file" id="fileInput">
         </label>
 
-        <div class="progress" id="progress">
-            <div class="bar">
-                <div class="fill" id="fill"></div>
+        <div class="progress-wrapper" id="progressWrapper">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
             </div>
             <div class="progress-text" id="progressText">0%</div>
-            <button class="cancel-btn" id="cancelBtn">Отменить загрузку</button>
         </div>
+
     </div>
 
-    <!-- ===== FILE LIST ===== -->
-    <div class="files">
+    <!-- FILE LIST -->
+    <div class="files-area">
         <div class="files-title">Ваши файлы</div>
-
         Загрузите ваши файлы
-
     </div>
-
 </div>
 
 <script>
     const input = document.getElementById("fileInput");
-    const progress = document.getElementById("progress");
-    const fill = document.getElementById("fill");
-    const text = document.getElementById("progressText");
-    const cancelBtn = document.getElementById("cancelBtn");
-
-    let xhr = null;
+    const progressWrapper = document.getElementById("progressWrapper");
+    const progressFill = document.getElementById("progressFill");
+    const progressText = document.getElementById("progressText");
 
     input.addEventListener("change", () => {
+        if (!input.files.length) return;
+
         const file = input.files[0];
-        if (!file) return;
+        const formData = new FormData();
+        formData.append("file", file);
 
-        progress.style.display = "block";
-        fill.classList.remove("success");
-        fill.style.width = "0%";
-        text.textContent = "0%";
+        progressWrapper.style.display = "block";
+        progressFill.style.width = "0%";
+        progressText.textContent = "0%";
 
-        const form = new FormData();
-        form.append("file", file);
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "/upload", true);
 
-        xhr = new XMLHttpRequest();
-        xhr.open("POST", "/files");
-
-        xhr.upload.onprogress = e => {
+        xhr.upload.onprogress = (e) => {
             if (e.lengthComputable) {
                 const percent = Math.round((e.loaded / e.total) * 100);
-                fill.style.width = percent + "%";
-                text.textContent = percent + "%";
+                progressFill.style.width = percent + "%";
+                progressText.textContent = percent + "%";
             }
         };
 
         xhr.onload = () => {
-            fill.classList.add("success");
-            text.textContent = "✓ Загружено";
-
+            progressText.textContent = "Загрузка завершена";
+            progressFill.style.width = "100%";
             setTimeout(() => {
-                location.reload();
-            }, 800);
+            location.reload(); // ОБНОВЛЕНИЕ СТРАНИЦЫ
+        }, 800);
         };
 
-        xhr.send(form);
+        xhr.send(formData);
     });
-
-    cancelBtn.onclick = () => {
-        if (xhr) {
-            xhr.abort();
-            progress.style.display = "none";
-        }
-    };
 </script>
 
 </body>

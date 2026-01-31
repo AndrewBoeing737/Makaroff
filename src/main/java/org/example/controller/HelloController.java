@@ -94,7 +94,7 @@ public class HelloController {
     // Обработка регистрации
     @PostMapping("/register")
     public RedirectView registerSubmit(@RequestParam(required = false, defaultValue = "Гость") String login,
-                                 @RequestParam(required = false, defaultValue = "Гость") String password) {
+                                 @RequestParam(required = false, defaultValue = "Гость") String password) throws IOException {
         System.out.println("Register login: " + login + "\tPassword: " + password);
         RedirectView redirectView = new RedirectView();
         if(database.addUser(login,password)){
@@ -121,12 +121,21 @@ public class HelloController {
                     "</div>"+
                     "<input type=\"hidden\" name=\"filename\" value=\""+client.clientFiles.get(i).getName()+"\">"+
                     "</button>"+
+                    "</form>"+
+                    "<form class=\"delete-form\" method=\"post\" action=\"/files/delete\">"+
+                    "<input type=\"hidden\""+
+            "name=\"filename\""+
+            "value=\""+client.clientFiles.get(i).getName()+"\">"+
+                    "<button class=\"delete-btn\" type=\"submit\">"+
+                    "Удалить"+
+                    "</button>"+
                     "</form>";
         }
         page=page.replace("Загрузите ваши файлы",files);
+        System.out.println("Страница files загружена пользователем: "+client.getLogin());
         return page;
     }
-    @PostMapping("/files")
+    @PostMapping("/upload")
     public RedirectView GetFile(@RequestParam("file")MultipartFile file){
         if(file.isEmpty()){
             RedirectView rv=new RedirectView("/filemanager");
@@ -188,8 +197,8 @@ public class HelloController {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
-    @GetMapping("/files/delete")
-    public void deleteFile(@RequestParam("filename") String filename) {
+    @PostMapping ("/files/delete")
+    public RedirectView deleteFile(@RequestParam("filename") String filename) {
             File file = new File(client.getBaseFolder(), filename);
             if(database.Deletefile(file.getName(),client)){
                 if(file.delete()){
@@ -200,6 +209,9 @@ public class HelloController {
             }else{
                     System.out.println("Пользователь "+client.getLogin()+"пытался удалить файл "+filename+" но не получилось");
             }
+
+        RedirectView rv=new RedirectView("/files",true,false);
+        return rv;
 
     }
 }

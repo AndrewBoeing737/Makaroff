@@ -92,7 +92,15 @@ public class ClientFile {
     public void setFileway(String fileway) {
         this.fileway = fileway;
     }
+
     public long getSize() {
         return size;
+    }
+
+    public String getStringSize(){
+        String tmp="";
+
+
+        return tmp;
     }
 }

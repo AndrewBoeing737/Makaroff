@@ -1,8 +1,6 @@
 package org.example.baseclases;
 
 import java.io.File;
-import java.lang.reflect.Type;
-
 
 enum FileType{
 

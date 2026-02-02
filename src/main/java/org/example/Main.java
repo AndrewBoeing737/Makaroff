@@ -22,7 +22,6 @@ public class Main {
         InetAddress localHost = InetAddress.getLocalHost();
         System.out.println("http://"+localHost.getHostAddress()+":8080");
         Database.Init();
-        Database.startBrowser();
 
         System.out.println(Database.getUsersAsString());
         Tomcat tomcat = new Tomcat();

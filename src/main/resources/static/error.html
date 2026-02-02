@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>MAKAROFF · Ошибка</title>
+
+    <style>
+        *{
+            box-sizing:border-box;
+            font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial;
+        }
+
+        body{
+            margin:0;
+            height:100vh;
+            background:#ffffff;
+            color:#1d1d1f;
+            overflow:hidden;
+        }
+
+        /* ===== HEADER ===== */
+
+        .header{
+            position:absolute;
+            top:0;
+            left:0;
+            right:0;
+            height:64px;
+            padding:0 32px;
+
+            display:flex;
+            align-items:center;
+
+            font-size:15px;
+            font-weight:700;
+            letter-spacing:1px;
+
+            z-index:10;
+        }
+
+        /* ===== CENTER ===== */
+
+        .page{
+            position:relative;
+            width:100%;
+            height:100%;
+
+            display:flex;
+            align-items:center;
+            justify-content:center;
+
+            z-index:5;
+        }
+
+        .error-title{
+            font-size:64px;
+            font-weight:700;
+            letter-spacing:.3px;
+        }
+
+        /* ===== WAVES ===== */
+
+        .waves{
+            position:absolute;
+            left:0;
+            right:0;
+            bottom:0;
+            height:320px;
+
+            overflow:hidden;
+            pointer-events:none;
+
+            z-index:2;
+        }
+
+        .waves-blur{
+            position:absolute;
+            inset:0;
+            backdrop-filter:blur(26px);
+            -webkit-backdrop-filter:blur(26px);
+            z-index:4;
+        }
+
+        /* ===== WAVE BASE ===== */
+
+        .wave{
+            position:absolute;
+            left:-80%;
+            bottom:-120px;
+
+            width:260%;
+            height:280px;
+
+            border-radius:100% 100% 0 0;
+
+            background:#d2d2d7;
+
+            will-change:transform;
+
+            animation:
+                waveMove 2.1s linear infinite,
+                waveFloat 0.95s ease-in-out infinite;
+        }
+
+        /* передняя волна (ярче) */
+        .wave.front{
+            height:240px;
+            bottom:-60px;
+
+            background:#d8d8dd;
+            opacity:0.95;
+
+            animation-duration:1.8s, 0.85s;
+        }
+
+        /* задняя волна (темнее) */
+        .wave.back{
+            height:310px;
+            bottom:-140px;
+
+            background:#bcbcc3;
+            opacity:0.6;
+
+            animation-duration:2.6s, 1.25s;
+            animation-delay:0s, .18s;
+        }
+
+        /* активное горизонтальное движение */
+        @keyframes waveMove{
+            from{
+                transform:translate3d(0,0,0);
+            }
+            to{
+                transform:translate3d(55%,0,0);
+            }
+        }
+
+        /* сильно активнее, но без дерганий */
+        @keyframes waveFloat{
+            0%{
+                transform:translate3d(0,0,0);
+            }
+            25%{
+                transform:translate3d(0,-28px,0);
+            }
+            50%{
+                transform:translate3d(0,-46px,0);
+            }
+            75%{
+                transform:translate3d(0,-26px,0);
+            }
+            100%{
+                transform:translate3d(0,0,0);
+            }
+        }
+
+        /* мягкое затухание вверх */
+
+        .waves::before{
+            content:"";
+            position:absolute;
+            left:0;
+            right:0;
+            top:0;
+            height:140px;
+
+            background:linear-gradient(
+                to top,
+                rgba(255,255,255,0),
+                #ffffff
+            );
+
+            z-index:6;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="header">
+    MAKAROFF
+</div>
+
+<div class="page">
+    <div class="error-title">Ошибка</div>
+</div>
+
+<div class="waves">
+
+    <div class="wave back"></div>
+    <div class="wave front"></div>
+
+    <div class="waves-blur"></div>
+
+</div>
+
+</body>
+</html>

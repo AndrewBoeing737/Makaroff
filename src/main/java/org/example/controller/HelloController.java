@@ -109,6 +109,9 @@ public class HelloController {
     }
     @GetMapping("/files")
     public String filesForm() {
+        if(client==null){
+            return loginForm();
+        }
         String page= readResourceHtml("static/filemanager.html");
         page=page.replace("*ACCAUNT_FOR_REPLACE*",client.getLogin());
         String files="";
@@ -152,7 +155,7 @@ public class HelloController {
             return rv;
         } catch (IOException e) {
             System.out.println(e.toString());
-            RedirectView rv=new RedirectView("/files");
+            RedirectView rv=new RedirectView("/settings");
             return rv;
 
         }
@@ -204,9 +207,13 @@ public class HelloController {
                     System.out.println("Пользователь "+client.getLogin()+" удалил файл "+filename);
                 }else{
                     System.out.println("Пользователь "+client.getLogin()+"пытался удалить файл "+filename+ "но не получилось");
+                    RedirectView rv=new RedirectView("/settings");
+                    return rv;
                 }
             }else{
                     System.out.println("Пользователь "+client.getLogin()+"пытался удалить файл "+filename+" но не получилось");
+                RedirectView rv=new RedirectView("/settings");
+                return rv;
             }
 
         RedirectView rv=new RedirectView("/files",true,false);
@@ -214,10 +221,39 @@ public class HelloController {
 
     }
     @GetMapping("/settings")
-    public String settings(){
+    public String settings() throws SQLException {
         String page= readResourceHtml("static/settings.html");
+        page=page.replace("*ACCAUNT_FOR_CHANGE*",client.getLogin());
+        if(Database.BrowserIsOn()){
+           page= page.replace("*H2BrowserEnabled*","checked");
+        }else{page=page.replace("*H2BrowserEnabled*","unchecked");}
         return page;
-
     }
+    @GetMapping("/error")
+    public String errorPage(){
+        return readResourceHtml("static/error.html");
+    }
+    @PostMapping("/settings/h2browser")
+    public RedirectView h2browser(@RequestParam(value = "enabled",required = false) boolean h2) throws SQLException {
+        if(h2){
+            Database.startBrowser();
+        }else {
+            Database.stopBrowser();
+        }
+       RedirectView rv=new RedirectView("/settings");
+        return rv;
+    }
+    @PostMapping("/settings/username")
+    public RedirectView changeUsername(@RequestParam(value ="username") String username)  {
+        try {
+            database.RenameUser(client, username);
+        } catch (Exception e) {
+            RedirectView rv=new RedirectView("/error");
+            return rv;
+        }
+        RedirectView rv=new RedirectView("/settings");
+        return rv;
+    }
+
 }
 

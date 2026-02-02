@@ -15,14 +15,26 @@ import java.util.List;
 
 public class Database {
     private static Server webServer;
-
+    private static boolean H2BrowserEnabled=false;
     public static void startBrowser() throws SQLException {
         // Запустить веб-консоль на порту 8082
-        if (webServer != null){
-            return;
+        if(webServer!=null && webServer.isRunning(false)){
+            webServer.start();
         }
         webServer = Server.createWebServer("-web", "-webAllowOthers", "-webPort", "8085").start();
         System.out.println("H2 Console доступна: http://localhost:8085");
+        H2BrowserEnabled=true;
+    }
+    public static void stopBrowser() throws SQLException {
+        if(webServer==null) {
+            return;
+        }
+        webServer.stop();
+        System.out.println("H2 Console отключена");
+        H2BrowserEnabled=false;
+    }
+    public static boolean BrowserIsOn() throws SQLException {
+        return H2BrowserEnabled;
     }
 
     private static final String URL =
@@ -197,5 +209,22 @@ public class Database {
             return clientFiles;
         }
 
+    }
+    public void RenameUser (Client client,String newName){
+        try (Connection c = DriverManager.getConnection(URL, USER, PASS);
+             Statement st = c.createStatement();
+             PreparedStatement ps = c.prepareStatement(
+                     "UPDATE users SET login=? WHERE id=?")) {
+
+            ps.setString(1, newName);
+            ps.setLong(2, client.getId());
+            int rs = ps.executeUpdate();
+            if(rs==1) {
+                client.setLogin(newName);
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+
+        }
     }
 }

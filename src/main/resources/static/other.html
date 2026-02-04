@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>MAKAROFF · Other</title>
+
+  <style>
+    *{
+        box-sizing:border-box;
+        font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial;
+    }
+
+    body{
+        margin:0;
+        height:100vh;
+        background:#ffffff;
+        color:#1d1d1f;
+    }
+
+    /* ===== HEADER ===== */
+
+    .header{
+        height:64px;
+        padding:0 32px;
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        border-bottom:1px solid #d2d2d7;
+        background:rgba(255,255,255,.85);
+        backdrop-filter:blur(12px);
+    }
+
+    .logo{
+        font-size:22px;
+        font-weight:700;
+        letter-spacing:1px;
+    }
+
+    .account{
+        font-size:14px;
+        color:#6e6e73;
+    }
+
+    /* ===== PAGE ===== */
+
+    .page{
+        position:relative;
+        height:calc(100vh - 64px);
+        padding:32px;
+    }
+
+    /* ===== BACK BUTTON (bottom left, clean) ===== */
+
+    .back-btn{
+        all:unset;
+
+        position:absolute;
+        left:32px;
+        bottom:32px;
+
+        padding:8px 14px;
+
+        border-radius:12px;
+
+        font-size:13px;
+        font-weight:500;
+
+        color:#6e6e73;
+
+        cursor:pointer;
+
+        transition:background .15s, color .15s;
+    }
+
+    .back-btn:hover{
+        background:#f5f5f7;
+        color:#1d1d1f;
+    }
+
+    /* ===== CENTER FILE INFO ===== */
+
+    .file-center{
+        position:absolute;
+        top:50%;
+        left:50%;
+        transform:translate(-50%,-50%);
+
+        display:flex;
+        align-items:center;
+        gap:32px;
+    }
+
+    /* icon */
+
+    .file-icon{
+        width:140px;
+        height:140px;
+        border-radius:28px;
+
+        background:#f5f5f7;
+        border:1px solid #d2d2d7;
+
+        display:flex;
+        align-items:center;
+        justify-content:center;
+
+        font-size:64px;
+    }
+
+    /* info card */
+
+    .file-info{
+        min-width:320px;
+
+        padding:22px 26px;
+
+        background:#f5f5f7;
+        border:1px solid #d2d2d7;
+        border-radius:20px;
+
+        font-size:16px;
+        line-height:1.6;
+        color:#1d1d1f;
+    }
+
+    .file-info span{
+        color:#6e6e73;
+    }
+
+    /* ===== ACTION BUTTONS ===== */
+
+    .actions{
+        position:absolute;
+        right:32px;
+        bottom:32px;
+
+        display:flex;
+        gap:14px;
+    }
+
+    .action-btn{
+        all:unset;
+
+        padding:14px 28px;
+
+        border-radius:14px;
+        font-size:15px;
+        font-weight:600;
+
+        cursor:pointer;
+        transition:transform .1s, filter .15s;
+    }
+
+    .action-btn:hover{
+        filter:brightness(.95);
+    }
+
+    .action-btn:active{
+        transform:scale(.98);
+    }
+
+    /* Apple blue */
+
+    .share-btn{
+        background:#0071e3;
+        color:#ffffff;
+    }
+
+    /* Apple red */
+
+    .delete-btn{
+        background:#ff3b30;
+        color:#ffffff;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="header">
+  <div class="logo">MAKAROFF</div>
+  <div class="account">*ACCAUNT_FOR_REPLACE*</div>
+</div>
+
+<div class="page">
+
+  <form action="/files" method="get">
+    <button class="back-btn" type="submit">Назад</button>
+  </form>
+
+
+  <div class="file-center">
+
+    <div class="file-icon">📄</div>
+
+    <div class="file-info">
+      <div><span>Имя:</span>*FILENAME*</div>
+      <div><span>Размер:</span> *FILESIZE*</div>
+      <div><span>Тип:</span> *FILETYPE*</div>
+      <div><span>Владелец:</span> *FILEOWNERS*</div>
+    </div>
+
+  </div>
+
+  <!-- Кнопки действий -->
+  <div class="actions">
+
+    <form action="/share" method="post">
+      <button class="action-btn share-btn" type="submit">
+        Поделиться
+      </button>
+    </form>
+
+    <form action="/delete" method="post">
+    <input type="hidden" name="filename" value= *FILENAME*>
+    <button class="action-btn delete-btn" type="submit">
+      Удалить
+    </button>
+    </form>
+
+  </div>
+
+</div>
+
+</body>
+</html>

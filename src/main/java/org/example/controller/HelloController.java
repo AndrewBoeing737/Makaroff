@@ -125,11 +125,11 @@ public class HelloController {
                     "<input type=\"hidden\" name=\"filename\" value=\""+client.clientFiles.get(i).getName()+"\">"+
                     "</button>"+
                     "</form>"+
-                    "<form class=\"delete-form\" method=\"post\" action=\"/files/delete\">"+
+                    "<form class=\"delete-form\" method=\"post\" action=\"/files/any\">"+
                     "<input type=\"hidden\" name=\"filename\""+
             "value=\""+client.clientFiles.get(i).getName()+"\">"+
                     "<button class=\"delete-btn\" type=\"submit\">"+
-                    "Удалить"+
+                    "Прочее"+
                     "</button>"+
                     "</form>\n </div>\n";
         }
@@ -199,7 +199,7 @@ public class HelloController {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
-    @PostMapping ("/files/delete")
+    @PostMapping ("/delete")
     public RedirectView deleteFile(@RequestParam("filename") String filename) {
             File file = new File(client.getBaseFolder(), filename);
             if(database.Deletefile(file.getName(),client)){
@@ -219,6 +219,19 @@ public class HelloController {
         RedirectView rv=new RedirectView("/files",true,false);
         return rv;
 
+    }
+    @PostMapping ("/files/any")
+    public String anyFile(@RequestParam("filename") String filename) {
+        File file = new File(client.getBaseFolder(), filename);
+        String page=readResourceHtml("static/other.html");
+        page=page.replace("*ACCAUNT_FOR_REPLACE*",client.getLogin());
+        page=page.replace("*FILENAME*",filename);
+        page=page.replace("*FILESIZE*",filename);
+        page=page.replace("*FILETYPE*",filename);
+        page=page.replace("*FILEOWNERS*", client.getLogin());
+
+
+        return page;
     }
     @GetMapping("/settings")
     public String settings() throws SQLException {

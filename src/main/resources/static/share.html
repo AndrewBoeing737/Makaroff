@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>MAKAROFF · Share</title>
+
+    <style>
+        *{
+            box-sizing:border-box;
+            font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial;
+        }
+
+        body{
+            margin:0;
+            height:100vh;
+            background:#ffffff;
+            color:#1d1d1f;
+            overflow:hidden;
+        }
+
+        /* ===== HEADER ===== */
+
+        .header{
+            height:64px;
+            padding:0 32px;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            border-bottom:1px solid #d2d2d7;
+            background:rgba(255,255,255,.85);
+            backdrop-filter:blur(12px);
+        }
+
+        .logo{
+            font-size:22px;
+            font-weight:700;
+            letter-spacing:1px;
+        }
+
+        .account{
+            font-size:14px;
+            color:#6e6e73;
+        }
+
+        /* ===== PAGE ===== */
+
+        .page{
+            position:relative;
+            height:calc(100vh - 64px);
+            padding:32px;
+        }
+
+        /* ===== TITLE (лаконично) ===== */
+
+        .page-title{
+            position:absolute;
+            left:32px;
+            top:16px;
+
+            font-size:14px;
+            font-weight:500;
+            color:#6e6e73;
+        }
+
+        .page-title b{
+            color:#1d1d1f;
+            font-weight:600;
+        }
+
+        /* ===== SHARE OUT ===== */
+
+        .share-out-form{
+            position:absolute;
+            top:16px;
+            right:32px;
+        }
+
+        .share-out-btn{
+            all:unset;
+
+            padding:10px 18px;
+            border-radius:14px;
+
+            background:#6e6e73;
+            color:#ffffff;
+
+            font-size:14px;
+            font-weight:500;
+
+            cursor:pointer;
+        }
+
+        .share-out-btn:hover{
+            filter:brightness(.95);
+        }
+
+        /* ===== BACK BUTTON ===== */
+
+        .back-btn{
+            all:unset;
+
+            position:absolute;
+            left:32px;
+            bottom:32px;
+
+            padding:8px 14px;
+            border-radius:12px;
+
+            font-size:13px;
+            font-weight:500;
+            color:#6e6e73;
+
+            cursor:pointer;
+        }
+
+        .back-btn:hover{
+            background:#f5f5f7;
+            color:#1d1d1f;
+        }
+
+        /* ===== USERS ===== */
+
+        .users-wrapper{
+            position:absolute;
+            top:96px;
+            left:50%;
+            transform:translateX(-50%);
+
+            width:520px;
+        }
+
+        .users-title{
+            font-size:18px;
+            font-weight:600;
+            margin-bottom:12px;
+        }
+
+        .users-list{
+            height:360px;
+            overflow-y:auto;
+            padding:6px;
+            border-radius:18px;
+        }
+
+        /* ===== TILE (как /files) ===== */
+
+        .user-tile{
+            display:flex;
+            align-items:center;
+            gap:14px;
+
+            padding:14px 16px;
+            margin-bottom:10px;
+
+            border-radius:16px;
+
+            background:#ffffff;
+            border:1px solid #e5e5ea;
+
+            box-shadow:0 4px 12px rgba(0,0,0,.04);
+
+            cursor:pointer;
+            transition:transform .08s, box-shadow .08s, background .08s;
+        }
+
+        .user-tile:hover{
+            background:#f5f5f7;
+            box-shadow:0 8px 18px rgba(0,0,0,.06);
+        }
+
+        .user-tile input{
+            accent-color:#0071e3;
+            transform:scale(1.1);
+        }
+
+        .user-name{
+            font-size:15px;
+            font-weight:500;
+        }
+
+        /* ===== OK ===== */
+
+        .ok-wrapper{
+            position:absolute;
+            left:50%;
+            transform:translateX(-50%);
+            bottom:96px;
+        }
+
+        .ok-btn{
+            all:unset;
+
+            padding:12px 44px;
+            border-radius:14px;
+
+            background:#34c759;
+            color:#ffffff;
+
+            font-size:15px;
+            font-weight:600;
+
+            cursor:pointer;
+        }
+
+        .ok-btn:hover{
+            filter:brightness(.95);
+        }
+
+        .ok-btn:active{
+            transform:scale(.98);
+        }
+
+        /* ===== MODAL ===== */
+
+        .modal-overlay{
+            position:fixed;
+            inset:0;
+
+            background:rgba(0,0,0,.25);
+            backdrop-filter:blur(6px);
+
+            display:none;
+            align-items:center;
+            justify-content:center;
+
+            z-index:50;
+        }
+
+        .modal{
+            width:420px;
+
+            background:#ffffff;
+            border-radius:22px;
+
+            padding:24px;
+
+            box-shadow:0 20px 50px rgba(0,0,0,.2);
+
+            display:flex;
+            flex-direction:column;
+            gap:14px;
+        }
+
+        .modal-title{
+            font-size:18px;
+            font-weight:600;
+        }
+
+        .link-box{
+            padding:12px 14px;
+
+            background:#f5f5f7;
+            border:1px solid #d2d2d7;
+            border-radius:12px;
+
+            font-size:14px;
+            word-break:break-all;
+        }
+
+        .copy-btn{
+            all:unset;
+
+            align-self:flex-start;
+
+            padding:8px 14px;
+            border-radius:12px;
+
+            background:#0071e3;
+            color:#ffffff;
+
+            font-size:13px;
+            font-weight:500;
+
+            cursor:pointer;
+        }
+
+        /* плашка "Скопировано" */
+
+        .copy-tile{
+            display:none;
+
+            padding:14px 16px;
+            border-radius:16px;
+
+            background:#ffffff;
+            border:1px solid #e5e5ea;
+
+            box-shadow:0 4px 12px rgba(0,0,0,.04);
+
+            font-size:14px;
+            font-weight:500;
+            color:#1d1d1f;
+        }
+
+        /* modal back */
+
+        .modal-back-btn{
+            all:unset;
+
+            margin-top:4px;
+            align-self:center;
+
+            padding:8px 18px;
+            border-radius:12px;
+
+            font-size:13px;
+            font-weight:500;
+
+            color:#6e6e73;
+
+            cursor:pointer;
+        }
+
+        .modal-back-btn:hover{
+            background:#f5f5f7;
+            color:#1d1d1f;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="header">
+    <div class="logo">MAKAROFF</div>
+    <div class="account">*ACCOUNT_FOR_REPLACE*</div>
+</div>
+
+<div class="page">
+
+    <!-- теперь слева аккуратно -->
+    <div class="page-title">
+        Поделиться файлом · <b>example.pdf</b>
+    </div>
+
+    <!-- теперь справа -->
+    <form class="share-out-form" method="get" action="/share/out">
+        <button class="share-out-btn" type="submit" id="shareOutBtn">
+            Поделиться вне системы
+        </button>
+    </form>
+
+    <form method="post" action="/share">
+
+        <div class="users-wrapper">
+
+            <div class="users-title">Выберите пользователей</div>
+
+            <div class="users-list">
+
+                <label class="user-tile">
+                    <input type="checkbox" name="users" value="andrew">
+                    <div class="user-name">andrew</div>
+                </label>
+
+                <label class="user-tile">
+                    <input type="checkbox" name="users" value="kate">
+                    <div class="user-name">kate</div>
+                </label>
+
+                <label class="user-tile">
+                    <input type="checkbox" name="users" value="john">
+                    <div class="user-name">john</div>
+                </label>
+
+                <label class="user-tile">
+                    <input type="checkbox" name="users" value="mike">
+                    <div class="user-name">mike</div>
+                </label>
+
+                <label class="user-tile">
+                    <input type="checkbox" name="users" value="anna">
+                    <div class="user-name">anna</div>
+                </label>
+
+            </div>
+
+        </div>
+
+        <div class="ok-wrapper">
+            <button class="ok-btn" type="submit">OK</button>
+        </div>
+
+    </form>
+
+    <form action="/files" method="get">
+        <button class="back-btn" type="submit">Назад</button>
+    </form>
+
+</div>
+
+<!-- MODAL -->
+
+<div class="modal-overlay" id="modal">
+
+    <div class="modal">
+
+        <div class="modal-title">Ссылка на файл</div>
+
+        <div class="link-box" id="shareLink">
+            https://example.com/share/abc123
+        </div>
+
+        <button class="copy-btn" type="button" id="copyBtn">
+            Копировать
+        </button>
+
+        <!-- теперь как плашка -->
+        <div class="copy-tile" id="copyTile">
+            Скопировано, для вставки нажмите Ctrl + V
+        </div>
+
+        <button class="modal-back-btn" type="button" id="closeModal">
+            Назад
+        </button>
+
+    </div>
+
+</div>
+
+<script>
+    const modal = document.getElementById("modal");
+    const closeBtn = document.getElementById("closeModal");
+    const copyBtn = document.getElementById("copyBtn");
+    const linkBox = document.getElementById("shareLink");
+    const copyTile = document.getElementById("copyTile");
+
+    document.getElementById("shareOutBtn").addEventListener("click", e=>{
+        e.preventDefault();
+        copyTile.style.display = "none";
+        modal.style.display = "flex";
+    });
+
+    closeBtn.addEventListener("click", ()=>{
+        modal.style.display = "none";
+    });
+
+    copyBtn.addEventListener("click", ()=>{
+        navigator.clipboard.writeText(linkBox.textContent.trim())
+            .then(()=>{
+                copyTile.style.display = "block";
+            });
+    });
+</script>
+
+</body>
+</html>

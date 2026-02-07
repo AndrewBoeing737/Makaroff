@@ -135,12 +135,10 @@ public class Database {
              Statement st = c.createStatement();
              PreparedStatement ps = c.prepareStatement(
                      "SELECT id,folder FROM users WHERE login=?")) {
-
             ps.setString(1, client.getLogin());
-
             ResultSet rs = ps.executeQuery();
             rs.next();
-            client.setId(rs.getInt("id"));
+            client.setId(rs.getLong("id"));
             client.setBaseFolder(rs.getString("folder"));
             } catch (SQLException ex) {
             System.out.println(ex.toString());
@@ -150,8 +148,6 @@ public class Database {
 
     }
     public void Addfile(Client client, ClientFile clientFile) {
-
-
         try (Connection c = DriverManager.getConnection(URL, USER, PASS);
              Statement st = c.createStatement();
              PreparedStatement ps = c.prepareStatement(
@@ -176,7 +172,7 @@ public class Database {
              Statement st = c.createStatement();
              PreparedStatement ps = c.prepareStatement(
                      "DELETE FROM files WHERE FILE_PATH = ?")) {
-            ps.setString(1, client.getBaseFolder()+"\\"+filename);
+            ps.setString(1, getFileWay(client,filename));
             int rs = ps.executeUpdate();
             client.DeleteFile(filename);
             if(rs>0) {
@@ -189,24 +185,41 @@ public class Database {
         }
 
     }
-    public Client getClient(String login){
+    public void getClientWithoutFiles(String login,Client new_client){
         try(Connection c=DriverManager.getConnection(URL,USER,PASS);
             Statement st=c.createStatement();
             PreparedStatement ps=c.prepareStatement("SELECT * FROM users WHERE login = ?")) {
             ps.setString(1,login);
             ResultSet rs = ps.executeQuery();
-            Client client=new Client(rs.getString("login"));
-            client.setId(rs.getInt("id"));
-            client.setBaseFolder(rs.getString("folder"));
-            return client;
+            rs.next();
+            new_client.setLogin(login);
+            new_client.setId(rs.getLong("id"));
+            System.out.println("id"+rs.getInt("id"));
+            new_client.setBaseFolder(rs.getString("folder"));
+
         } catch (SQLException e) {
-            Client client=new Client(login);
-            System.out.println(e.toString());
-            return client;
+            System.out.println("ErRor:"+e.toString());
+
         }
 
     }
-    public List<Client> GetAllClints(){
+    public String getFileWay(Client client,String filename){
+        try (Connection c = DriverManager.getConnection(URL, USER, PASS);
+             Statement st = c.createStatement();
+             PreparedStatement ps = c.prepareStatement(
+                     "SELECT FILE_PATH FROM files WHERE OWNER_ID = ? AND file_name = ?"))
+        {
+            ps.setLong(1, client.getId());
+            ps.setString(2, filename);
+          ResultSet rs=ps.executeQuery();
+          rs.next();
+          return rs.getString("FILE_PATH");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "";
+        }
+        }
+        public List<Client> GetAllClints(){
         List<Client> clients=new ArrayList<>();
         try (Connection c = DriverManager.getConnection(URL, USER, PASS);
              Statement st = c.createStatement();
@@ -234,9 +247,11 @@ public class Database {
 
             ps.setLong(1, client.getId());
             ResultSet rs = ps.executeQuery();
+            int count=0;
             while(rs.next()){
                 String path=rs.getString("FILE_PATH");
                 clientFiles.add(new ClientFile(path));
+
             }
             return clientFiles;
         } catch (SQLException ex) {

@@ -166,7 +166,7 @@ public class HelloController {
     public void downloadFile(@RequestParam("filename") String filename,
                              HttpServletResponse response) {
         try {
-            File file = new File(client.getBaseFolder(), filename);
+            File file = new File(database.getFileWay(client,filename));
 
             if (!file.exists() || !file.isFile()) {
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -203,7 +203,7 @@ public class HelloController {
     }
     @PostMapping ("/delete")
     public RedirectView deleteFile(@RequestParam("filename") String filename) {
-            File file = new File(client.getBaseFolder(), filename);
+            File file = new File(database.getFileWay(client,filename));
             if(database.Deletefile(file.getName(),client)){
                 if(file.delete()){
                     System.out.println("Пользователь "+client.getLogin()+" удалил файл "+filename);
@@ -266,6 +266,7 @@ public class HelloController {
                 break;
             }
         }
+
         if(clientFile==null){
             RedirectView rv=new RedirectView("/error");
             return rv;
@@ -273,7 +274,9 @@ public class HelloController {
 
         System.out.println(clientFile.getName()+" "+clientFile.getFileway());
         for(int i=0;i<users.size();++i){
-            Client tmp_client=database.getClient(users.get(i));
+            Client tmp_client=new Client(users.get(i));
+            database.getClientWithoutFiles(users.get(i),tmp_client);
+            System.out.println(tmp_client.getId());
             System.out.println(tmp_client.getLogin()+" "+tmp_client.getId()+" "+tmp_client.getBaseFolder());
             database.Addfile(tmp_client,clientFile);
         }

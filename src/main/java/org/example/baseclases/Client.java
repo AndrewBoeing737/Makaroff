@@ -6,8 +6,8 @@ import java.util.ArrayList;
 public class Client {
     private String login;
     private String baseFolder;
-    private int id;
-    public List<ClientFile> clientFiles;
+    private Long id;
+   public List<ClientFile> clientFiles;
     public Client(String _login){
         login=_login;
         clientFiles=new ArrayList<>();
@@ -62,11 +62,11 @@ public class Client {
     public void setBaseFolder(String baseFolder) {
         this.baseFolder = baseFolder;
     }
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 }

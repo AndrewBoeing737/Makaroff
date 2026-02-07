@@ -45,6 +45,7 @@ public class ClientFile {
     public ClientFile(String fileway){
         File file=new File(fileway);
         name=file.getName();
+        this.fileway=fileway;
         filetype= FileType.fromFilename(name);
         extension=name.substring(name.lastIndexOf('.'));
         size=file.length();

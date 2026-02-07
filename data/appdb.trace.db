@@ -164,3 +164,21 @@ INSERT INTO files (FILE_NAME,FILE_EXTENSION,FILE_PATH,FILE_SIZE,FILE_TYPE,OWNER_
 	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
 	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
 	at java.base/java.lang.Thread.run(Thread.java:1575)
+2026-02-07 15:49:55.287607+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: Нет данных
+No data is available [2000-224]
+2026-02-07 15:49:56.044842+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: Нет данных
+No data is available [2000-224]
+2026-02-07 15:58:34.244819+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: Нет данных
+No data is available [2000-224]
+2026-02-07 15:58:34.992457+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: Нет данных
+No data is available [2000-224]
+2026-02-07 16:21:32.209428+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: Нет данных
+No data is available [2000-224]
+2026-02-07 16:21:33.024951+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: Нет данных
+No data is available [2000-224]

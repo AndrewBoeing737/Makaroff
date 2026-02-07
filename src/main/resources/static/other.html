@@ -205,7 +205,8 @@
   <!-- Кнопки действий -->
   <div class="actions">
 
-    <form action="/share" method="post">
+    <form action="/share" method="get">
+      <input type="hidden" name="filename" value= *FILENAME*>
       <button class="action-btn share-btn" type="submit">
         Поделиться
       </button>

@@ -12,6 +12,21 @@ public class Client {
         login=_login;
         clientFiles=new ArrayList<>();
     }
+    public Client(Client client){
+        login=client.login;
+        clientFiles=new ArrayList<>();
+        for (int i=0;i<client.clientFiles.size();++i){
+            clientFiles.add(client.clientFiles.get(i));
+        }
+    }
+    public Client deepCopy(Client client){
+        Client client1=new Client(client.getLogin());
+        client1.clientFiles=new ArrayList<>();
+        for (int i=0;i<client.clientFiles.size();++i){
+            client1.clientFiles.add(client.clientFiles.get(i));
+        }
+        return client1;
+    }
 
     public String getLogin() {
         return login;

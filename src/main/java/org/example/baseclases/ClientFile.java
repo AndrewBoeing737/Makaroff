@@ -56,6 +56,14 @@ public class ClientFile {
         fileway=file.getAbsolutePath();
         size=file.length();
     }
+    public ClientFile(ClientFile new_file){
+        this.name=new_file.name;
+        this.size=new_file.size;
+        this.filetype=new_file.filetype;
+        this.fileway=new_file.fileway;
+        this.extension=new_file.extension;
+    }
+
     public String getName() {
         return name;
     }
@@ -67,6 +75,7 @@ public class ClientFile {
     public FileType getFiletype() {
         return filetype;
     }
+
     public String getFiletypeinString() {
         return filetype.name();
     }
@@ -97,8 +106,6 @@ public class ClientFile {
 
     public String getStringSize(){
         String tmp="";
-
-
         return tmp;
     }
 }

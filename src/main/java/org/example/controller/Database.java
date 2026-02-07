@@ -189,6 +189,41 @@ public class Database {
         }
 
     }
+    public Client getClient(String login){
+        try(Connection c=DriverManager.getConnection(URL,USER,PASS);
+            Statement st=c.createStatement();
+            PreparedStatement ps=c.prepareStatement("SELECT * FROM users WHERE login = ?")) {
+            ps.setString(1,login);
+            ResultSet rs = ps.executeQuery();
+            Client client=new Client(rs.getString("login"));
+            client.setId(rs.getInt("id"));
+            client.setBaseFolder(rs.getString("folder"));
+            return client;
+        } catch (SQLException e) {
+            Client client=new Client(login);
+            System.out.println(e.toString());
+            return client;
+        }
+
+    }
+    public List<Client> GetAllClints(){
+        List<Client> clients=new ArrayList<>();
+        try (Connection c = DriverManager.getConnection(URL, USER, PASS);
+             Statement st = c.createStatement();
+             PreparedStatement ps = c.prepareStatement(
+                     "SELECT * FROM users")) {
+
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                Client client=new Client(rs.getString("login"));
+                clients.add(client);
+            }
+            return clients;
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+            return clients;
+        }
+    }
     public List<ClientFile> GetFilesFromUser(Client client) {
 
         List<ClientFile> clientFiles=new ArrayList<>();

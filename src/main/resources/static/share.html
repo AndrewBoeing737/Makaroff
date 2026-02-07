@@ -322,14 +322,14 @@
 
 <div class="header">
     <div class="logo">MAKAROFF</div>
-    <div class="account">*ACCOUNT_FOR_REPLACE*</div>
+    <div class="account"> *ACCOUNT_FOR_REPLACE* </div>
 </div>
 
 <div class="page">
 
     <!-- теперь слева аккуратно -->
     <div class="page-title">
-        Поделиться файлом · <b>example.pdf</b>
+        Поделиться файлом · <b>*FILENAME*</b>
     </div>
 
     <!-- теперь справа -->
@@ -339,7 +339,7 @@
         </button>
     </form>
 
-    <form method="post" action="/share">
+    <form method="post" action="/share/in">
 
         <div class="users-wrapper">
 
@@ -347,33 +347,10 @@
 
             <div class="users-list">
 
-                <label class="user-tile">
-                    <input type="checkbox" name="users" value="andrew">
-                    <div class="user-name">andrew</div>
-                </label>
-
-                <label class="user-tile">
-                    <input type="checkbox" name="users" value="kate">
-                    <div class="user-name">kate</div>
-                </label>
-
-                <label class="user-tile">
-                    <input type="checkbox" name="users" value="john">
-                    <div class="user-name">john</div>
-                </label>
-
-                <label class="user-tile">
-                    <input type="checkbox" name="users" value="mike">
-                    <div class="user-name">mike</div>
-                </label>
-
-                <label class="user-tile">
-                    <input type="checkbox" name="users" value="anna">
-                    <div class="user-name">anna</div>
-                </label>
+               Делиться не с кем
 
             </div>
-
+            <input type="hidden" name="filename" value= *FILENAME*>
         </div>
 
         <div class="ok-wrapper">

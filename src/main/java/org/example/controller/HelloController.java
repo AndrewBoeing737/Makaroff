@@ -25,6 +25,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 public class HelloController {
@@ -232,6 +234,52 @@ public class HelloController {
 
 
         return page;
+    }
+
+    @GetMapping ("/share")
+    public String sharing(@RequestParam("filename") String filename){
+        String page=readResourceHtml("static/share.html");
+        page=page.replace("*ACCOUNT_FOR_REPLACE*", client.getLogin());
+        page=page.replace("*FILENAME*",filename);
+        List<Client> clints=database.GetAllClints();
+        String clientsList="";
+        for(int i=0;i<clints.size();++i){
+            if(clints.get(i).getLogin().equals(client.getLogin())){continue;}
+            clientsList+=" <label class=\"user-tile\">\n" +
+                    "                    <input type=\"checkbox\" name=\"users\" value=\""+clints.get(i).getLogin()+"\">\n" +
+                    "                    <div class=\"user-name\">"+clints.get(i).getLogin()+"</div>\n" +
+                    "                </label>";
+        }
+        page=page.replace("Делиться не с кем",clientsList);
+        return page;
+
+    }
+    @PostMapping("/share/in")
+    public RedirectView share(
+            @RequestParam("users") List<String> users,
+            @RequestParam("filename") String filename
+    ) {
+        ClientFile clientFile = null;
+        for(int i=0;i<client.clientFiles.size();++i){
+            if(client.clientFiles.get(i).getName().equals(filename)){
+                clientFile=client.clientFiles.get(i);
+                break;
+            }
+        }
+        if(clientFile==null){
+            RedirectView rv=new RedirectView("/error");
+            return rv;
+        }
+
+        System.out.println(clientFile.getName()+" "+clientFile.getFileway());
+        for(int i=0;i<users.size();++i){
+            Client tmp_client=database.getClient(users.get(i));
+            System.out.println(tmp_client.getLogin()+" "+tmp_client.getId()+" "+tmp_client.getBaseFolder());
+            database.Addfile(tmp_client,clientFile);
+        }
+
+        RedirectView rv=new RedirectView("/files");
+        return rv;
     }
     @GetMapping("/settings")
     public String settings() throws SQLException {

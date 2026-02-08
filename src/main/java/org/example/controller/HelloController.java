@@ -25,6 +25,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.SQLException;
+import java.sql.Time;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -122,7 +124,7 @@ public class HelloController {
                     "<button class=\"file-download-btn\" type=\"submit\">"+
                     "<div class=\"file-name\">"+client.clientFiles.get(i).getName()+"</div>"+
                     "<div class=\"file-meta\">"+
-                            client.clientFiles.get(i).getFiletypeinString()+ "·"+ String.valueOf( client.clientFiles.get(i).getSize())+"·"+" 10.02.2026 22:41"+
+                            client.clientFiles.get(i).getFiletypeinString()+ " · "+ String.valueOf( client.clientFiles.get(i).getStringSize())+" · "+ LocalDateTime.now() +
                     "</div>"+
                     "<input type=\"hidden\" name=\"filename\" value=\""+client.clientFiles.get(i).getName()+"\">"+
                     "</button>"+
@@ -209,12 +211,12 @@ public class HelloController {
                     System.out.println("Пользователь "+client.getLogin()+" удалил файл "+filename);
                 }else{
                     System.out.println("Пользователь "+client.getLogin()+"пытался удалить файл "+filename+ "но не получилось");
-                    RedirectView rv=new RedirectView("/settings");
+                    RedirectView rv=new RedirectView("/error");
                     return rv;
                 }
             }else{
                     System.out.println("Пользователь "+client.getLogin()+"пытался удалить файл "+filename+" но не получилось");
-                RedirectView rv=new RedirectView("/settings");
+                RedirectView rv=new RedirectView("/error");
                 return rv;
             }
 
@@ -224,15 +226,14 @@ public class HelloController {
     }
     @PostMapping ("/files/any")
     public String anyFile(@RequestParam("filename") String filename) {
-        File file = new File(client.getBaseFolder(), filename);
+        File file = new File(database.getFileWay(client,filename));
+        ClientFile clientFile=new ClientFile(file);
         String page=readResourceHtml("static/other.html");
         page=page.replace("*ACCAUNT_FOR_REPLACE*",client.getLogin());
-        page=page.replace("*FILENAME*",filename);
-        page=page.replace("*FILESIZE*",filename);
-        page=page.replace("*FILETYPE*",filename);
+        page=page.replace("*FILENAME*",clientFile.getName());
+        page=page.replace("*FILESIZE*",clientFile.getStringSize());
+        page=page.replace("*FILETYPE*",String.valueOf(clientFile.getFiletype()));
         page=page.replace("*FILEOWNERS*", client.getLogin());
-
-
         return page;
     }
 

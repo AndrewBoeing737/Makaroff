@@ -143,10 +143,8 @@ public class Database {
             } catch (SQLException ex) {
             System.out.println(ex.toString());
         }
-
-
-
     }
+
     public void Addfile(Client client, ClientFile clientFile) {
         try (Connection c = DriverManager.getConnection(URL, USER, PASS);
              Statement st = c.createStatement();
@@ -168,11 +166,13 @@ public class Database {
 
     }
     boolean Deletefile(String filename,Client client) {
+        System.out.println(getFileWay(client,filename));
         try (Connection c = DriverManager.getConnection(URL, USER, PASS);
              Statement st = c.createStatement();
              PreparedStatement ps = c.prepareStatement(
                      "DELETE FROM files WHERE FILE_PATH = ?")) {
             ps.setString(1, getFileWay(client,filename));
+
             int rs = ps.executeUpdate();
             client.DeleteFile(filename);
             if(rs>0) {
@@ -215,7 +215,7 @@ public class Database {
           rs.next();
           return rs.getString("FILE_PATH");
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println( e.toString() +" "+filename+" "+client.getId()+" "+client.getLogin());
             return "";
         }
         }

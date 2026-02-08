@@ -106,7 +106,19 @@ public class ClientFile {
     }
 
     public String getStringSize(){
-        String tmp="";
-        return tmp;
+        StringBuilder sb=new StringBuilder();
+        long gigabytes=1073741824L;
+        long megabytes=1048576;
+        long kilobytes=1024;
+        if(size>=gigabytes){
+            sb.append(size/gigabytes).append(".").append(String.valueOf( size%gigabytes).substring(0,2)).append(" GB");
+        }else if(size>=megabytes){
+            sb.append(size/megabytes).append(".").append(String.valueOf(size%megabytes).substring(0,2)).append(" MB");
+        } else if (size>=kilobytes) {
+            sb.append(size/kilobytes).append(".").append(String.valueOf(size%kilobytes).substring(0,2)).append(" KB");
+        }else{
+            sb.append(size).append(" B");
+        }
+        return sb.toString();
     }
 }

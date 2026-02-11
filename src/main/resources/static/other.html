@@ -172,6 +172,13 @@
         background:#ff3b30;
         color:#ffffff;
     }
+
+    /* Apple green */
+
+     .download-btn{
+        background:#34C759;
+        color:#ffffff;
+    }
   </style>
 </head>
 
@@ -204,6 +211,13 @@
 
   <!-- Кнопки действий -->
   <div class="actions">
+
+    <form action="/files/downloads" method="get">
+      <input type="hidden" name="filename" value= *FILENAME*>
+      <button class="action-btn download-btn" type="submit">
+        Скачать
+      </button>
+    </form>
 
     <form action="/share" method="get">
       <input type="hidden" name="filename" value= *FILENAME*>

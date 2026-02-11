@@ -1,16 +1,13 @@
 package org.example;
 
-//import com.sun.security.ntlm.Server;
 import org.apache.catalina.Context;
 import org.apache.catalina.startup.Tomcat;
 import org.example.config.WebConfig;
 import org.example.controller.Database;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
-
 import java.io.File;
 import java.net.InetAddress;
-import java.sql.*;
 
 public class Main {
 

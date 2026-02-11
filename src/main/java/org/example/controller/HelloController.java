@@ -149,7 +149,7 @@ public class HelloController {
         System.out.println("Принят новый файл от пользователя "+client.getLogin()+" название файла и размер: "+file.getOriginalFilename()+" "+file.getSize());
         try{
             File dir =new File(client.getBaseFolder());
-            File save=new File(dir,file.getOriginalFilename());
+            File save=new File(dir,file.getOriginalFilename().replace(" ","_"));
             file.transferTo(save);
             ClientFile newfile=new ClientFile(save.getAbsoluteFile());
             client.clientFiles.add(newfile);

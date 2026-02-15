@@ -6,6 +6,8 @@ import org.h2.tools.Server;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -276,5 +278,35 @@ public class Database {
             System.out.println(ex.toString());
 
         }
+    }
+    public String Sharinglink(Client client,String filename,boolean once_share){
+        try {Connection c = DriverManager.getConnection(URL, USER, PASS);
+             Statement st = c.createStatement();
+             PreparedStatement ps = c.prepareStatement(
+                     "SELECT ID FROM files WHERE OWNER_ID = ? AND FILE_NAME=?");
+            ps.setLong(1,client.getId());
+            ps.setString(2,filename);
+            ResultSet rs=ps.executeQuery();
+            rs.next();
+            ps=c.prepareStatement(
+                    "INSERT INTO share(CLIENT_FILE,IS_ONCE) VALUES(?,?)");
+            ps.setInt(1,rs.getInt("id"));
+            ps.setBoolean(2,once_share);
+            int k = ps.executeUpdate();
+            ps=c.prepareStatement(
+                    "SELECT ID FROM share WHERE CLIENT_FILE = ?");
+            ps.setInt(1,rs.getInt("id"));
+            rs= ps.executeQuery();
+            rs.next();
+            InetAddress localHost = InetAddress.getLocalHost();
+            return "http://"+localHost.getHostAddress()+":8080/sharingfile/"+rs.getInt("id");
+        } catch (SQLException e) {
+            System.out.println("SQL ERROR \n"+e.toString());
+            return "Ошибка";
+        } catch (UnknownHostException e) {
+            System.out.println("NETWORK ERROR \n"+e.toString());
+            return "Ошибка";
+        }
+
     }
 }

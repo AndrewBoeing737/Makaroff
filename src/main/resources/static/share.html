@@ -219,7 +219,7 @@
             background:rgba(0,0,0,.25);
             backdrop-filter:blur(6px);
 
-            display:none;
+            display:flex;
             align-items:center;
             justify-content:center;
 
@@ -333,8 +333,9 @@
     </div>
 
     <!-- теперь справа -->
-    <form class="share-out-form" method="get" action="/share/out">
-        <button class="share-out-btn" type="submit" id="shareOutBtn">
+    <form class="share-out-form" method="get" action="/share/linkfile">
+        <input type="hidden" name="filename" value="*FILENAME*" />
+        <button class="share-out-btn" type="submit" >
             Поделиться вне системы
         </button>
     </form>
@@ -367,32 +368,7 @@
 
 <!-- MODAL -->
 
-<div class="modal-overlay" id="modal">
 
-    <div class="modal">
-
-        <div class="modal-title">Ссылка на файл</div>
-
-        <div class="link-box" id="shareLink">
-            https://example.com/share/abc123
-        </div>
-
-        <button class="copy-btn" type="button" id="copyBtn">
-            Копировать
-        </button>
-
-        <!-- теперь как плашка -->
-        <div class="copy-tile" id="copyTile">
-            Скопировано, для вставки нажмите Ctrl + V
-        </div>
-
-        <button class="modal-back-btn" type="button" id="closeModal">
-            Назад
-        </button>
-
-    </div>
-
-</div>
 
 <script>
     const modal = document.getElementById("modal");
@@ -401,11 +377,7 @@
     const linkBox = document.getElementById("shareLink");
     const copyTile = document.getElementById("copyTile");
 
-    document.getElementById("shareOutBtn").addEventListener("click", e=>{
-        e.preventDefault();
-        copyTile.style.display = "none";
-        modal.style.display = "flex";
-    });
+
 
     closeBtn.addEventListener("click", ()=>{
         modal.style.display = "none";

@@ -1,0 +1,38 @@
+/* окно с копированием ссылки на файл */
+
+<div class="modal-overlay" id="modal">
+
+    <div class="modal">
+
+        <div class="modal-title">Ссылка на файл</div>
+
+        <div class="link-box" id="shareLink">
+            https://example.com/share/abc123
+        </div>
+
+        <button class="copy-btn" type="button" id="copyBtn">
+            Копировать
+        </button>
+
+        <!-- теперь как плашка -->
+        <div class="copy-tile" id="copyTile">
+            Скопировано, для вставки нажмите Ctrl + V
+        </div>
+
+        <button class="modal-back-btn" type="button" id="closeModal">
+            Назад
+        </button>
+
+    </div>
+
+</div>
+
+
+/* id кнопки Поделиться вне системы */
+id="shareOutBtn"
+
+document.getElementById("shareOutBtn").addEventListener("click", e=>{
+        e.preventDefault();
+        copyTile.style.display = "none";
+        modal.style.display = "flex";
+    });

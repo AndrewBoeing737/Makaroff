@@ -440,3 +440,30 @@ No data is available [2000-224]
 2026-02-08 20:09:49.638621+03:00 jdbc[4]: exception
 org.h2.jdbc.JdbcSQLNonTransientException: Нет данных
 No data is available [2000-224]
+2026-02-15 20:16:29.470939+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "ALTER TABLE SHARE \000d\000a[*]MODIFY COLUMN COUNT BOOLEAN"; ожидалось "., ADD, SET, RENAME, DROP, ALTER"
+Syntax error in SQL statement "ALTER TABLE SHARE \000d\000a[*]MODIFY COLUMN COUNT BOOLEAN"; expected "., ADD, SET, RENAME, DROP, ALTER"; SQL statement:
+ALTER TABLE SHARE 
+MODIFY COLUMN COUNT BOOLEAN [42001-224]
+2026-02-15 20:16:41.406280+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "ALTER TABLE SHARE [*]MODIFY COLUMN COUNT BOOLEAN"; ожидалось "., ADD, SET, RENAME, DROP, ALTER"
+Syntax error in SQL statement "ALTER TABLE SHARE [*]MODIFY COLUMN COUNT BOOLEAN"; expected "., ADD, SET, RENAME, DROP, ALTER"; SQL statement:
+ALTER TABLE SHARE MODIFY COLUMN COUNT BOOLEAN [42001-224]
+2026-02-15 21:13:59.919812+03:00 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "[*]SHARE"; ожидалось "SAVEPOINT, SCRIPT, SHUTDOWN"
+Syntax error in SQL statement "[*]SHARE"; expected "SAVEPOINT, SCRIPT, SHUTDOWN"; SQL statement:
+SHARE [42001-224]
+2026-02-15 22:44:55.602772+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "ALTER TABLE share ALTER COLUMN ID INT [*]AUTO_INCREMEN"
+Syntax error in SQL statement "ALTER TABLE share ALTER COLUMN ID INT [*]AUTO_INCREMEN"; SQL statement:
+ALTER TABLE share ALTER COLUMN ID INT AUTO_INCREMEN [42000-224]
+2026-02-15 22:45:04.119427+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "ALTER TABLE SHARE ALTER COLUMN ID INT [*]AUTO_INCREMEN"
+Syntax error in SQL statement "ALTER TABLE SHARE ALTER COLUMN ID INT [*]AUTO_INCREMEN"; SQL statement:
+ALTER TABLE SHARE ALTER COLUMN ID INT AUTO_INCREMEN [42000-224]
+2026-02-15 22:47:08.578305+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: Нет данных
+No data is available [2000-224]
+2026-02-15 23:03:55.290441+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: Нет данных
+No data is available [2000-224]

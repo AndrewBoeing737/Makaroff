@@ -319,6 +319,42 @@ public class HelloController {
         RedirectView rv=new RedirectView("/settings");
         return rv;
     }
+    @GetMapping("/share/linkfile")
+    public String Sharelink(@RequestParam(value="filename") String filename,@RequestParam(value="once_share",required = false) boolean once){
+                String page=sharing(filename);
+                String newWindow=
+                        "\n" +
+                        "<div class=\"modal-overlay\" id=\"modal\">\n" +
+                        "\n" +
+                        "    <div class=\"modal\">\n" +
+                        "\n" +
+                        "        <div class=\"modal-title\">Ссылка на файл</div>\n" +
+                        "\n" +
+                        "        <div class=\"link-box\" id=\"shareLink\">\n" +
+                                database.Sharinglink(client,filename,once)+"\n" +
+                        "        </div>\n" +
+                        "\n" +
+                        "        <button class=\"copy-btn\" type=\"button\" id=\"copyBtn\">\n" +
+                        "            Копировать\n" +
+                        "        </button>\n" +
+                        "\n" +
+                        "        <!-- теперь как плашка -->\n" +
+                        "        <div class=\"copy-tile\" id=\"copyTile\">\n" +
+                        "            Скопировано, для вставки нажмите Ctrl + V\n" +
+                        "        </div>\n" +
+                        "\n" +
+                        "        <button class=\"modal-back-btn\" type=\"button\" id=\"closeModal\">\n" +
+                        "            Назад\n" +
+                        "        </button>\n" +
+                        "\n" +
+                        "    </div>\n" +
+                        "\n" +
+                        "</div>";
+                page=page.replace("<!-- MODAL -->",newWindow);
+
+                return page;
+
+    }
 
 }
 

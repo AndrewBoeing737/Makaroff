@@ -309,4 +309,29 @@ public class Database {
         }
 
     }
+
+    public ClientFile GetFileShared(int id){
+        try{Connection c = DriverManager.getConnection(URL, USER, PASS);
+            Statement st = c.createStatement();
+            PreparedStatement ps=c.prepareStatement(
+                    "SELECT * FROM SHARE WHERE ID=?");
+            ps.setInt(1,id);
+            ResultSet rs=ps.executeQuery();
+            rs.next();
+            if(rs.getBoolean("IS_ONCE")){
+                ps=c.prepareStatement("DELETE * FROM SHARE WHERE ID=?");
+                ps.setInt(1,id);
+                ps.executeUpdate();
+            }
+            ps=c.prepareStatement("SELECT * FROM FILES WHERE ID=?");
+            ps.setLong(1,rs.getInt("CLIENT_FILE"));
+            rs=ps.executeQuery();
+            rs.next();
+            ClientFile clientFile=new ClientFile(rs.getString("FILE_PATH"));
+            return clientFile;
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+            return null;
+        }
+    }
 }

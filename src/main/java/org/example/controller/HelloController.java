@@ -10,16 +10,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -167,6 +165,8 @@ public class HelloController {
     @GetMapping("/files/downloads")
     public void downloadFile(@RequestParam("filename") String filename,
                              HttpServletResponse response) {
+
+
         try {
             File file = new File(database.getFileWay(client,filename));
 
@@ -205,6 +205,10 @@ public class HelloController {
     }
     @PostMapping ("/delete")
     public RedirectView deleteFile(@RequestParam("filename") String filename) {
+        filename=new String(
+                filename.getBytes(StandardCharsets.ISO_8859_1),
+                StandardCharsets.UTF_8
+        );
             File file = new File(database.getFileWay(client,filename));
             if(database.Deletefile(file.getName(),client)){
                 if(file.delete()){
@@ -226,6 +230,10 @@ public class HelloController {
     }
     @PostMapping ("/files/any")
     public String anyFile(@RequestParam("filename") String filename) {
+        filename=new String(
+                filename.getBytes(StandardCharsets.ISO_8859_1),
+                StandardCharsets.UTF_8
+        );
         File file = new File(database.getFileWay(client,filename));
         ClientFile clientFile=new ClientFile(file);
         String page=readResourceHtml("static/other.html");
@@ -355,6 +363,76 @@ public class HelloController {
                 return page;
 
     }
+    @GetMapping("/sharingfile/{id}")
+    public String IdSharingLink(@PathVariable("id") int id){
+        String page=readResourceHtml("static/other.html");
+        if(database==null){
+            database=new Database();
+        }
+        String buttons_to_delete=" " +
+                "<form action=\"/share\" method=\"get\">\n" +
+                "      <input type=\"hidden\" name=\"filename\" value= *FILENAME*>\n" +
+                "      <button class=\"action-btn share-btn\" type=\"submit\">\n" +
+                "        Поделиться\n" +
+                "      </button>\n" +
+                "    </form>\n" +
+                "\n" +
+                "    <form action=\"/delete\" method=\"post\">\n" +
+                "    <input type=\"hidden\" name=\"filename\" value= *FILENAME*>\n" +
+                "    <button class=\"action-btn delete-btn\" type=\"submit\">\n" +
+                "      Удалить\n" +
+                "    </button>\n" +
+                "    </form>";
+        ClientFile clientFile=database.GetFileShared(id);
 
+        page=page.replace(buttons_to_delete,"");
+        page=page.replace("*ACCAUNT_FOR_REPLACE*","");
+        page=page.replace("*FILENAME*",clientFile.getName());
+        page=page.replace("*FILESIZE*",clientFile.getStringSize());
+        page=page.replace("*FILETYPE*",String.valueOf(clientFile.getFiletype()));
+        page=page.replace("*FILEOWNERS*", "");
+        page=page.replace("<form action=\"/files/downloads\" method=\"get\">","<form action=\"/sharingfile/"+id+"/download\" method=\"get\">");
+        return page;
+    }
+    @GetMapping("/sharingfile/{id}/download")
+    public void downloadFileFromLink(@PathVariable("id") int id,
+                             HttpServletResponse response) {
+        try {
+            ClientFile clientFile=database.GetFileShared(id);
+            File file = new File(clientFile.getFileway());
+
+            if (!file.exists() || !file.isFile()) {
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                return;
+            }
+
+            String contentType = Files.probeContentType(file.toPath());
+            if (contentType == null) {
+                contentType = "application/octet-stream";
+            }
+
+            response.setContentType(contentType);
+            response.setContentLengthLong(file.length());
+
+            response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
+                    "attachment; filename=\"" + file.getName() + "\"");
+
+            // Отправляем файл
+            try (FileInputStream fis = new FileInputStream(file);
+                 OutputStream os = response.getOutputStream()) {
+
+                byte[] buffer = new byte[4096];
+                int bytesRead;
+                while ((bytesRead = fis.read(buffer)) != -1) {
+                    os.write(buffer, 0, bytesRead);
+                }
+                os.flush();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        }
+    }
 }
 

@@ -36,3 +36,6 @@ document.getElementById("shareOutBtn").addEventListener("click", e=>{
         copyTile.style.display = "none";
         modal.style.display = "flex";
     });
+
+
+<input type="hidden" name="client-id" value="*CLIENT_ID*">

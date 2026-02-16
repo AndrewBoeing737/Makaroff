@@ -37,6 +37,7 @@ enum FileType{
 
 public class ClientFile {
 
+    private Client owner=null;
     private String name;
     private FileType filetype;
     private String extension;
@@ -120,5 +121,13 @@ public class ClientFile {
             sb.append(size).append(" B");
         }
         return sb.toString();
+    }
+
+    public Client getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Client owner) {
+        this.owner = owner;
     }
 }
